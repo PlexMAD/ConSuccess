@@ -59,7 +59,7 @@ const config = (env: EnvVariables): Configuration => {
       historyApiFallback: true,
     },
 
-    devtool: isDev ? "source-map" : false,
+    devtool: isDev ? "eval-cheap-source-map" : false,
   };
 };
 
