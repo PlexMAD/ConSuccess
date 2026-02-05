@@ -1,4 +1,6 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import Header from "@/components/Header";
+import { Metadata } from "next";
+import { Geist, Inter } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -6,20 +8,25 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+export const metadata: Metadata = {
+  title: "ConSuccess",
+  description: "Description",
+};
+
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <header className="w-screen h-20 bg-primary">А вот и мы</header>
-        <main>{children}</main>
+      <body className={`${geistSans.variable} ${inter.variable} antialiased font-inter`}>
+        <Header />
+        <main className="--background container mx-auto">{children}</main>
       </body>
     </html>
   );
 };
 
-export default DashboardLayout;
+export default Layout;
