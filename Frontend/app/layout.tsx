@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/header/Header";
 import { Metadata } from "next";
 import { Geist, Inter } from "next/font/google";
 import "./globals.css";
@@ -21,7 +21,9 @@ export const metadata: Metadata = {
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${inter.variable} antialiased font-inter`}>
+      <body
+        className={`${geistSans.variable} ${inter.variable} antialiased font-inter`}
+      >
         <Header />
         <main className="--background container mx-auto">{children}</main>
       </body>
