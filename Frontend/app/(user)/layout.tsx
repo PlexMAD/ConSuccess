@@ -1,6 +1,6 @@
-import React from "react";
 import Image from "next/image";
-import Star from "../../assets/Star.svg";
+import React from "react";
+import { Star } from "../_icons";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -19,4 +19,3 @@ const layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default layout;
-
