@@ -1,6 +1,6 @@
 import {
+  BadRequestException,
   Injectable,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -17,10 +17,10 @@ export class AuthService {
   async signIn(username: string, pass: string) {
     const user = await this.usersService.getUserByName(username);
     if (!user) {
-      throw new NotFoundException();
+      throw new BadRequestException('Not found user with given name');
     }
     if (!(await compareWithHash(pass, user.passwordHash))) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Wrong password');
     }
     const payload = { sub: user.id, username: user.username };
     return {
