@@ -4,7 +4,7 @@ import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   createUser(data: Prisma.UserCreateInput) {
     return this.prisma.user.create({ data });
@@ -24,5 +24,9 @@ export class UsersService {
 
   removeUser(id: number) {
     return this.prisma.user.delete({ where: { id } });
+  }
+
+  getUserByName(username: string) {
+    return this.prisma.user.findUnique({ where: { username } });
   }
 }
