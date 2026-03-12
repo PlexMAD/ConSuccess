@@ -1,11 +1,17 @@
 "use client";
 
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { loginUser } from "./_api/login";
-import { useSetAuth } from "../_store/useAuth";
-import { redirect } from "next/navigation";
+
+type UserCreds = {
+  username: string;
+  password: string;
+};
 
 const LoginPage = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -17,13 +23,18 @@ const LoginPage = () => {
     },
   });
 
-  const setAuth = useSetAuth();
-
   const onSubmit: SubmitHandler<UserCreds> = async (data) => {
-    const token = await loginUser(data);
-    if (token) {
-      setAuth(token);
-      redirect("/");
+    try {
+      const result = await loginUser(data);
+
+      if (result.ok) {
+        router.push("/");
+        router.refresh();
+      } else {
+        console.log(result.message);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
     }
   };
 
@@ -82,7 +93,7 @@ const LoginPage = () => {
 
           <button
             type="submit"
-            className="h-12 w-full rounded-2xl bg-sky-600 text-sm font-semibold text-white transition hover:bg-sky-700 active:scale-[0.99] cursor-pointer"
+            className="h-12 w-full rounded-2xl cursor-pointer bg-sky-600 text-sm font-semibold text-white transition hover:bg-sky-700 active:scale-[0.99]"
           >
             Войти
           </button>

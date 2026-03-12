@@ -1,14 +1,11 @@
 "use client";
 
-import { useIsAuth, useLogout } from "@/app/_store/useAuth";
 import Link from "next/link";
 
 const HeaderProfile = () => {
-  const logout = useLogout();
-  const isAuth = useIsAuth();
   return (
     <div className="flex flex-row gap-2 items-center">
-      {isAuth ? (
+      {/* {isAuth ? (
         <Link
           href={"/"}
           className="text-primary text-right font-geist text-base font-bold w-30"
@@ -25,7 +22,7 @@ const HeaderProfile = () => {
         </Link>
       )}
 
-      {isAuth && <div className="rounded-full bg-primary w-20 h-20"></div>}
+      {isAuth && <div className="rounded-full bg-primary w-20 h-20"></div>} */}
     </div>
   );
 };

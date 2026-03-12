@@ -1,7 +1,12 @@
-import { axiosApi } from "@/shared/api/config";
-import { endpoints } from "@/shared/api/endpoints";
+import { UserCreds } from "@/shared/types/users";
+import axios from "axios";
+
+type LoginResponse = { ok: true } | { message: string; ok: false };
 
 export const loginUser = async (data: UserCreds) => {
-  const responce = await axiosApi.post<string>(`${endpoints.auth}/login`, data);
-  return responce.data;
+  const response = await axios.post<LoginResponse>("/api/auth/login", data, {
+    withCredentials: true,
+  });
+
+  return response.data;
 };
