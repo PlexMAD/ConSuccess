@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compareWithHash, encrypt } from 'src/utils/crypt';
-import { UsersService } from './users.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +22,7 @@ export class AuthService {
     if (!(await compareWithHash(pass, user.passwordHash))) {
       throw new UnauthorizedException('Wrong password');
     }
-    const payload = { sub: user.id, username: user.username };
+    const payload = { id: user.id, username: user.username };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
@@ -34,7 +34,7 @@ export class AuthService {
       username,
       passwordHash,
     });
-    const payload = { sub: createdUser.id, username: createdUser.username };
+    const payload = { id: createdUser.id, username: createdUser.username };
 
     if (createdUser) {
       return { access_token: await this.jwtService.signAsync(payload) };

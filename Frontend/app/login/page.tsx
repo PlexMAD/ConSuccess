@@ -1,7 +1,9 @@
 "use client";
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { checkMe } from "@/shared/api/auth";
 import { useRouter } from "next/navigation";
+import { useCallback, useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { loginUser } from "./_api/login";
 
 type UserCreds = {
@@ -12,6 +14,16 @@ type UserCreds = {
 const LoginPage = () => {
   const router = useRouter();
 
+  const fetchMe = useCallback(async () => {
+    const me = await checkMe();
+    if (me.user) {
+      router.push("/");
+    }
+  }, [router]);
+
+  useEffect(() => {
+    fetchMe();
+  }, [fetchMe]);
   const {
     register,
     handleSubmit,
@@ -28,8 +40,7 @@ const LoginPage = () => {
       const result = await loginUser(data);
 
       if (result.ok) {
-        router.push("/");
-        router.refresh();
+        window.location.reload();
       } else {
         console.log(result.message);
       }
