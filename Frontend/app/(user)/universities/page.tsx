@@ -1,4 +1,4 @@
-import { fetchUniversities } from "./_api/fetchUniversities";
+import { fetchUniversities } from "@/shared/api/universities";
 import UniversityCard from "./_components/UniversityCard";
 
 export const UniversitiesPage = async () => {

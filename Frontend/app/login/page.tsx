@@ -1,10 +1,9 @@
 "use client";
 
-import { checkMe } from "@/shared/api/auth";
+import { checkMe, loginUser } from "@/shared/api/auth";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { loginUser } from "./_api/login";
 
 type UserCreds = {
   username: string;

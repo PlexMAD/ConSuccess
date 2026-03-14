@@ -1,4 +1,12 @@
-import React from "react";
+import { fetchUniversities } from "@/shared/api/universities";
+
+export async function generateStaticParams() {
+  const universities = await fetchUniversities();
+
+  return universities.map((university) => ({
+    id: String(university.id),
+  }));
+}
 
 const UniversityPage = async ({
   params,

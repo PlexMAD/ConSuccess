@@ -1,6 +1,6 @@
-import { axiosApi } from "@/shared/api/config";
-import { endpoints } from "@/shared/api/endpoints";
 import { University } from "@/shared/types/universities";
+import { axiosApi } from "../config";
+import { endpoints } from "../endpoints";
 
 export const fetchUniversities = async () => {
   const responce = await axiosApi.get<University[]>(
