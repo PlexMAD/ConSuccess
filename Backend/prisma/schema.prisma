@@ -11,6 +11,7 @@ model User {
   id           Int        @id @default(autoincrement())
   username     String     @unique
   passwordHash String     @map("password_hash")
+  avatar       String?
   createdAt    DateTime   @default(now()) @map("created_at")
   favorites    Favorite[]
   posts        Post[]
@@ -29,6 +30,7 @@ model University {
   id       Int       @id @default(autoincrement())
   name     String
   city     String
+  avatar   String?
   subjects Subject[]
 }
 

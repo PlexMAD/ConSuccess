@@ -179,6 +179,10 @@ AutoTest.Net/
 # Web workbench (sass)
 .sass-cache/
 
+# Claude Code
+.claude/
+CLAUDE.md
+
 # Installshield output folder
 [Ee]xpress/
 
@@ -416,3 +420,4 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
