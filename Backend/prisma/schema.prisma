@@ -29,9 +29,16 @@ enum Role {
 model University {
   id       Int       @id @default(autoincrement())
   name     String
-  city     String
+  cityId   Int       @map("city_id")
   avatar   String?
+  city     City      @relation(fields: [cityId], references: [id])
   subjects Subject[]
+}
+
+model City {
+  id           Int          @id @default(autoincrement())
+  name         String       @unique
+  universities University[]
 }
 
 model Subject {
