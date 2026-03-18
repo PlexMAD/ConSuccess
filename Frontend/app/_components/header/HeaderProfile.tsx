@@ -2,52 +2,49 @@
 import { checkMe } from "@/shared/api/auth";
 import axios from "axios";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import { LogoutIcon } from "@/app/_icons";
+import { useRouter } from "next/navigation";
 
 const HeaderProfile = () => {
-  const [username, setUsername] = useState<string>("");
+  const router = useRouter();
+  const [username, setUsername] = useState<string | null>(null);
+
   useEffect(() => {
-    const fetchMe = async () => {
-      try {
-        const me = await checkMe();
-        if (me.ok && me.user) {
-          setUsername(me.user.username);
-        } else {
-          setUsername("");
-        }
-      } catch {
-        setUsername("");
-      }
-    };
-    fetchMe();
+    checkMe()
+      .then((me) => setUsername(me.ok && me.user ? me.user.username : null))
+      .catch(() => setUsername(null));
   }, []);
+
   const logout = async () => {
-    try {
-      await axios.post("/api/auth/logout");
-    } finally {
-      setUsername("");
-    }
+    await axios.post("/api/auth/logout");
+    setUsername(null);
+    router.refresh();
   };
-  return (
-    <div className="flex flex-row gap-2 items-center">
-      {username ? (
-        <Link
-          href="/"
-          className="text-primary text-right font-geist text-base font-bold w-30"
-          onClick={logout}
-        >
+
+  if (username) {
+    return (
+      <div className="flex flex-row gap-3 items-center">
+        <div className="rounded-full bg-primary w-10 h-10" />
+        <span className="font-geist text-base font-bold text-primary">
           {username}
-        </Link>
-      ) : (
-        <Link
-          className="text-primary text-center font-geist font-bold text-2xl"
-          href="/login"
-        >
-          Логин
-        </Link>
-      )}
-      {username && <div className="rounded-full bg-primary w-20 h-20" />}
-    </div>
+        </span>
+        <button onClick={logout} title="Выйти" className="cursor-pointer">
+          <Image src={LogoutIcon} alt="Выйти" width={20} height={20} />
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      className="text-primary text-center font-geist font-bold text-2xl"
+      href="/login"
+    >
+      Логин
+    </Link>
   );
 };
+
 export default HeaderProfile;

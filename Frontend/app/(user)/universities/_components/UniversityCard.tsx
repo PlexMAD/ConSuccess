@@ -19,7 +19,7 @@ const UniversityCard = ({ university }: { university: University }) => {
             {university.name}
           </h3>
 
-          <p className="text-sm text-slate-500">{university.city}</p>
+          <p className="text-sm text-slate-500">{university.city.name}</p>
         </div>
 
         <Link

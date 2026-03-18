@@ -6,9 +6,9 @@ import { Navlink } from "./Navlink";
 const Header = () => {
   return (
     <header className="w-screen bg-white py-6 mb-3.25">
-      <div className="container flex justify-between mx-auto">
+      <div className="container flex justify-between items-center mx-auto">
         <Image alt="logo" src={ConSuccessLogo} />
-        <nav className="p-6 bg-primary rounded-2xl items-center align-middle text-center ml-1">
+        <nav className="p-6 bg-primary rounded-2xl flex items-center text-center ml-1">
           <ul className="flex flex-row justify-between gap-50 px-2 font-geist uppercase text-white">
             <Navlink href={"/"} title={"Главная"} />
             <Navlink href={"/universities"} title={"Вузы"} />

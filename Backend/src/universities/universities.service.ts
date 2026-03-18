@@ -6,19 +6,22 @@ import { PrismaService } from 'src/prisma.service';
 export class UniversitiesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  createUniversity(data: Prisma.UniversityCreateInput) {
-    return this.prisma.university.create({ data });
+  createUniversity(name: string, cityId: number) {
+    return this.prisma.university.create({
+      data: { name, cityId },
+      include: { city: true },
+    });
   }
 
   getAllUniversities() {
-    return this.prisma.university.findMany();
+    return this.prisma.university.findMany({ include: { city: true } });
   }
 
   getUniversity(id: number) {
     return this.prisma.university.findUnique({ where: { id } });
   }
 
-  updateUniversity(id: number, data: Prisma.UserUpdateInput) {
+  updateUniversity(id: number, data: Prisma.UniversityUpdateInput) {
     return this.prisma.university.update({ where: { id }, data });
   }
 }
