@@ -8,3 +8,10 @@ export const fetchUniversities = async () => {
   );
   return responce.data;
 };
+
+export const fetchUniversity = async (id: number) => {
+  const response = await axiosApi.get<University>(
+    `${endpoints.universities}/${id}`,
+  );
+  return response.data;
+};

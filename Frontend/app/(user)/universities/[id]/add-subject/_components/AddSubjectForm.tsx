@@ -1,21 +1,22 @@
 "use client";
 
-import { fetchCities } from "@/shared/api/cities";
-import { City } from "@/shared/types/universities";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 type FormValues = {
   name: string;
-  cityId: number;
 };
 
-const AddUniversityPage = () => {
+const AddSubjectForm = ({
+  universityId,
+  universityName,
+}: {
+  universityId: string;
+  universityName: string;
+}) => {
   const router = useRouter();
-  const [cities, setCities] = useState<City[]>([]);
 
   const {
     register,
@@ -24,17 +25,10 @@ const AddUniversityPage = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
 
-  useEffect(() => {
-    fetchCities().then(setCities).catch(console.error);
-  }, []);
-
   const onSubmit = async (values: FormValues) => {
     try {
-      await axios.post("/api/universities", {
-        name: values.name,
-        cityId: Number(values.cityId),
-      });
-      router.push("/universities");
+      await axios.post(`/api/universities/${universityId}/subjects`, { name: values.name });
+      router.push(`/universities/${universityId}`);
     } catch (err) {
       const message =
         axios.isAxiosError(err) && err.response?.data?.message
@@ -46,17 +40,24 @@ const AddUniversityPage = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-md flex flex-col gap-4">
-      <Link href="/universities" className="self-start text-sm text-neutral-500 hover:text-neutral-800 transition">
+      <Link
+        href={`/universities/${universityId}`}
+        className="self-start text-sm text-neutral-500 hover:text-neutral-800 transition"
+      >
         ← Назад
       </Link>
-      <h1 className="text-2xl font-semibold font-geist">Добавить университет</h1>
+
+      <div>
+        <h1 className="text-2xl font-semibold font-geist">Добавить предмет</h1>
+        <p className="text-sm text-neutral-500">{universityName}</p>
+      </div>
 
       {errors.root && (
         <p className="text-sm text-red-500">{errors.root.message}</p>
       )}
 
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">Название университета</label>
+        <label className="text-sm font-medium">Название предмета</label>
         <input
           {...register("name", { required: "Введите название" })}
           placeholder="Введите название..."
@@ -64,25 +65,6 @@ const AddUniversityPage = () => {
         />
         {errors.name && (
           <p className="text-xs text-red-500">{errors.name.message}</p>
-        )}
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium">Город</label>
-        <select
-          {...register("cityId", { required: "Выберите город", validate: (v) => Number(v) !== 0 || "Выберите город" })}
-          defaultValue=""
-          className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
-        >
-          <option value="" disabled>Выберите город</option>
-          {cities.map((city) => (
-            <option key={city.id} value={city.id}>
-              {city.name}
-            </option>
-          ))}
-        </select>
-        {errors.cityId && (
-          <p className="text-xs text-red-500">{errors.cityId.message}</p>
         )}
       </div>
 
@@ -97,4 +79,4 @@ const AddUniversityPage = () => {
   );
 };
 
-export default AddUniversityPage;
+export default AddSubjectForm;

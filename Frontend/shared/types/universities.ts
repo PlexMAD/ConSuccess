@@ -9,3 +9,9 @@ export type University = {
     cityId: number;
     city: City;
 }
+
+export type Subject = {
+    id: number;
+    name: string;
+    universityId: number;
+}

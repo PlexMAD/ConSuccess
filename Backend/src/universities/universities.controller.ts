@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UniversitiesService } from 'src/universities/universities.service';
 
@@ -9,6 +9,11 @@ export class UniversitiesController {
   @Get()
   getAll() {
     return this.universityService.getAllUniversities();
+  }
+
+  @Get(':id')
+  getOne(@Param('id', ParseIntPipe) id: number) {
+    return this.universityService.getUniversity(id);
   }
 
   @Post()

@@ -18,7 +18,7 @@ export class UniversitiesService {
   }
 
   getUniversity(id: number) {
-    return this.prisma.university.findUnique({ where: { id } });
+    return this.prisma.university.findUnique({ where: { id }, include: { city: true } });
   }
 
   updateUniversity(id: number, data: Prisma.UniversityUpdateInput) {

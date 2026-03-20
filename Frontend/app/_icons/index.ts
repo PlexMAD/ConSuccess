@@ -1,5 +1,6 @@
 import ConSuccessLogo from "../../assets/ConSuccessLogo.svg"
-import Star from "../../assets/Star.svg"
+import FolderIcon from "../../assets/folder.svg"
 import LogoutIcon from "../../assets/logout-svgrepo-com.svg"
+import Star from "../../assets/Star.svg"
 
-export { ConSuccessLogo, Star, LogoutIcon }
+export { ConSuccessLogo, FolderIcon, LogoutIcon, Star }
