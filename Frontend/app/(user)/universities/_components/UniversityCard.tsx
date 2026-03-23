@@ -6,7 +6,7 @@ const UniversityCard = ({ university }: { university: University }) => {
     <li className="list-none">
       <button
         type="button"
-        className="flex h-full min-h-45 w-full cursor-pointer flex-col rounded-2xl bg-white p-5 text-left shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+        className="flex h-full min-h-45 w-full flex-col rounded-2xl bg-white p-5 text-left shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
       >
         {/* <UniversityLogo logoUrl={university.logoUrl} alt={university.name} /> */}
 

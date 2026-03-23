@@ -13,7 +13,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
           </span>
         </div>
       </div>
-      {children}
+      <div className="flex-1 min-w-0">{children}</div>
     </div>
   );
 };

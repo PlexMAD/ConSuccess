@@ -15,3 +15,19 @@ export type Subject = {
     name: string;
     universityId: number;
 }
+
+export type Attachment = {
+    id: number;
+    url: string;
+    postId: number;
+}
+
+export type Post = {
+    id: number;
+    title: string;
+    body: string;
+    subjectId: number;
+    userId: number;
+    createdAt: string;
+    attachments: Attachment[];
+}

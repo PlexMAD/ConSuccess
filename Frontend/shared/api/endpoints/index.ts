@@ -1,5 +1,6 @@
 export const endpoints = {
     universities: "/universities",
     cities: "/cities",
-    auth: "/auth"
+    auth: "/auth",
+    subjects: "/subjects",
 }

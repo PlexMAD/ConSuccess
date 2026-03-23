@@ -11,6 +11,11 @@ export class SubjectsController {
     return this.subjectsService.getSubjectsByUniversity(universityId);
   }
 
+  @Get(':id')
+  getOne(@Param('id', ParseIntPipe) id: number) {
+    return this.subjectsService.getSubjectById(id);
+  }
+
   @Post()
   @UseGuards(AuthGuard)
   create(

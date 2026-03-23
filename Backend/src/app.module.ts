@@ -4,6 +4,8 @@ import { AuthModule } from './auth/auth.module';
 import { CitiesController } from './cities/cities.controller';
 import { CitiesService } from './cities/cities.service';
 import { PrismaModule } from './prisma.module';
+import { PostsController } from './posts/posts.controller';
+import { PostsService } from './posts/posts.service';
 import { SubjectsController } from './subjects/subjects.controller';
 import { SubjectsService } from './subjects/subjects.service';
 import { UniversitiesController } from './universities/universities.controller';
@@ -19,7 +21,7 @@ import { UsersService } from './users/users.service';
       isGlobal: true,
     }),
   ],
-  controllers: [UsersController, UniversitiesController, CitiesController, SubjectsController],
-  providers: [UsersService, UniversitiesService, CitiesService, SubjectsService],
+  controllers: [UsersController, UniversitiesController, CitiesController, SubjectsController, PostsController],
+  providers: [UsersService, UniversitiesService, CitiesService, SubjectsService, PostsService],
 })
 export class AppModule {}

@@ -31,6 +31,12 @@ const UniversityPage = async ({
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
+        <Link
+          href="/universities"
+          className="self-start text-sm text-neutral-500 hover:text-neutral-800 transition"
+        >
+          ← Назад
+        </Link>
         <h1 className="text-2xl font-bold">{university.name} — Предметы</h1>
         <p className="text-sm text-neutral-500">{university.city.name}</p>
         {isAuthorized && (

@@ -8,3 +8,10 @@ export const fetchSubjectsByUniversity = async (universityId: number) => {
   );
   return response.data;
 };
+
+export const fetchSubject = async (universityId: number, subjectId: number) => {
+  const response = await axiosApi.get<Subject>(
+    `${endpoints.universities}/${universityId}/subjects/${subjectId}`,
+  );
+  return response.data;
+};
