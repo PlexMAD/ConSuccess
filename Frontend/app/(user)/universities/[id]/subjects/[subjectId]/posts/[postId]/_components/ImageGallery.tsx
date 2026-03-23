@@ -10,20 +10,20 @@ const ImageGallery = ({ attachments, title }: { attachments: Attachment[]; title
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-5 gap-3">
         {attachments.map((attachment) => (
           <button
             key={attachment.id}
             type="button"
             onClick={() => setSelected(`${apiURL}${attachment.url}`)}
-            className="group relative w-full aspect-square overflow-hidden rounded-xl border border-neutral-200 ring-1 ring-neutral-100 focus:outline-none hover:ring-primary hover:border-primary transition"
+            className="group relative w-full h-40 overflow-hidden rounded-xl border border-neutral-200 ring-1 ring-neutral-100 focus:outline-none hover:ring-primary hover:border-primary transition"
           >
             <Image
               src={`${apiURL}${attachment.url}`}
               alt={title}
               fill
               unoptimized
-              className="object-contain transition group-hover:brightness-75"
+              className="object-cover transition group-hover:brightness-75"
             />
             <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
               <span className="text-white text-sm font-medium drop-shadow">
@@ -47,13 +47,17 @@ const ImageGallery = ({ attachments, title }: { attachments: Attachment[]; title
             ×
           </button>
           <div
-            className="relative max-w-[90vw] max-h-[90vh]"
+            className="w-[60vw]"
             onClick={(e) => e.stopPropagation()}
           >
-            <img
+            <Image
               src={selected}
               alt={title}
-              className="max-w-[90vw] max-h-[90vh] object-contain rounded-xl"
+              width={0}
+              height={0}
+              sizes="60vw"
+              unoptimized
+              className="w-full h-auto rounded-xl"
             />
           </div>
         </div>

@@ -22,10 +22,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${inter.variable} antialiased font-inter`}
+        className={`${geistSans.variable} ${inter.variable} antialiased font-inter h-screen flex flex-col overflow-hidden`}
       >
         <Header />
-        <main className="--background container mx-auto">{children}</main>
+        <main className="--background container mx-auto flex-1 min-h-0 overflow-hidden">{children}</main>
       </body>
     </html>
   );

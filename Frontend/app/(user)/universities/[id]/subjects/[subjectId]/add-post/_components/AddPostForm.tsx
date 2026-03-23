@@ -68,7 +68,7 @@ const AddPostForm = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-md flex flex-col gap-4"
+      className="max-w-6xl flex flex-col gap-4 ml-1"
     >
       <Link
         href={backHref}
@@ -105,7 +105,7 @@ const AddPostForm = ({
         <textarea
           {...register("body", { required: "Введите текст" })}
           placeholder="Введите текст..."
-          rows={5}
+          rows={9}
           className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary resize-none"
         />
         {errors.body && (
