@@ -28,18 +28,18 @@ const PostCard = ({
             />
             {post.attachments.length > 1 && (
               <span className="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-1.5 py-0.5 rounded">
-                +{post.attachments.length - 1}
+                +{post.attachments.length - 1} изображений
               </span>
             )}
           </div>
         )}
-        <div className="flex flex-1 flex-col gap-2 p-5">
+        <div className="flex flex-1 flex-col gap-2 p-4">
           <h3 className="line-clamp-2 text-base font-semibold leading-5 text-slate-900">
             {post.title}
           </h3>
           <p className="line-clamp-2 text-sm text-neutral-500">{post.body}</p>
           <Link
-            className="mt-auto pt-2 text-sm font-medium text-primary"
+            className="mt-auto text-sm font-medium text-primary"
             href={`/universities/${universityId}/subjects/${subjectId}/posts/${post.id}`}
           >
             Открыть →

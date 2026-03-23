@@ -32,8 +32,10 @@ const SubjectPage = async ({
         >
           ← Назад
         </Link>
-        <h1 className="text-2xl font-bold">{subject.name} — Материалы</h1>
-        <p className="text-sm text-neutral-500">{university.name}</p>
+        <h1 className="text-2xl font-bold">
+          {university.name} — {subject.name}
+        </h1>
+        <p className="text-sm text-neutral-500"></p>
         {isAuthorized && (
           <Link
             className="self-start px-4 py-2 rounded-lg bg-primary text-white font-medium hover:opacity-90 transition"
@@ -49,7 +51,12 @@ const SubjectPage = async ({
       ) : (
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {posts.map((post) => (
-            <PostCard key={post.id} post={post} universityId={universityId} subjectId={subjectIdNum} />
+            <PostCard
+              key={post.id}
+              post={post}
+              universityId={universityId}
+              subjectId={subjectIdNum}
+            />
           ))}
         </ul>
       )}
