@@ -5,7 +5,7 @@ type LoginResponse = { ok: true } | { message: string; ok: false };
 
 type MeResponse = {
   ok: boolean;
-  user?: { id: number; username: string };
+  user?: { id: number; username: string; avatar: string | null };
   message?: string;
 };
 

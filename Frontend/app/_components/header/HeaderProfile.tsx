@@ -1,34 +1,87 @@
 "use client";
 import { checkMe } from "@/shared/api/auth";
+import { apiURL } from "@/shared/api/config";
+import { AvatarIcon, LogoutIcon } from "@/app/_icons";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { LogoutIcon } from "@/app/_icons";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+
+type User = { id: number; username: string; avatar: string | null };
 
 const HeaderProfile = () => {
   const router = useRouter();
-  const [username, setUsername] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const fetchUser = () => {
+    checkMe()
+      .then((me) => setUser(me.ok && me.user ? me.user : null))
+      .catch(() => setUser(null));
+  };
 
   useEffect(() => {
-    checkMe()
-      .then((me) => setUsername(me.ok && me.user ? me.user.username : null))
-      .catch(() => setUsername(null));
+    fetchUser();
   }, []);
 
   const logout = async () => {
     await axios.post("/api/auth/logout");
-    setUsername(null);
+    setUser(null);
     router.refresh();
   };
 
-  if (username) {
+  const handleAvatarClick = () => fileInputRef.current?.click();
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    try {
+      await axios.patch(`/api/users/${user.id}/avatar`, formData);
+      fetchUser();
+    } catch {}
+
+    e.target.value = "";
+  };
+
+  if (user) {
     return (
       <div className="flex flex-row gap-3 items-center">
-        <div className="rounded-full bg-primary w-10 h-10" />
+        <button
+          onClick={handleAvatarClick}
+          className="cursor-pointer rounded-full p-0.5 bg-primary shrink-0"
+          title="Изменить аватар"
+        >
+          <div className="w-9 h-9 rounded-full overflow-hidden bg-white flex items-center justify-center">
+            {user.avatar ? (
+              <Image
+                src={`${apiURL}${user.avatar}`}
+                alt={user.username}
+                width={36}
+                height={36}
+                className="w-full h-full object-cover"
+                unoptimized
+              />
+            ) : (
+              <Image src={AvatarIcon} alt="Аватар" width={24} height={24} />
+            )}
+          </div>
+        </button>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileChange}
+        />
+
         <span className="font-geist text-base font-bold text-primary">
-          {username}
+          {user.username}
         </span>
         <button onClick={logout} title="Выйти" className="cursor-pointer">
           <Image src={LogoutIcon} alt="Выйти" width={20} height={20} />

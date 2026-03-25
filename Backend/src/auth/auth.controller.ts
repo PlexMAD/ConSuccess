@@ -10,11 +10,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
+import { UsersService } from 'src/users/users.service';
 import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private usersService: UsersService,
+  ) {}
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
@@ -37,7 +41,9 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('me')
-  me(@Req() req: Request) {
-    return req['user'];
+  async me(@Req() req: Request) {
+    const { id, username } = req['user'] as { id: number; username: string };
+    const user = await this.usersService.getUser(id);
+    return { id, username, avatar: user?.avatar ?? null };
   }
 }
