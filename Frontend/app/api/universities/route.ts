@@ -1,6 +1,7 @@
 import { axiosApi } from "@/shared/api/config";
 import { endpoints } from "@/shared/api/endpoints";
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -21,6 +22,7 @@ export async function POST(req: Request) {
       },
     });
 
+    revalidatePath("/universities");
     return NextResponse.json(data, { status: 201 });
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

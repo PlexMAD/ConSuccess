@@ -1,7 +1,7 @@
 import { fetchSubjectsByUniversity } from "@/shared/api/subjects";
 import { fetchUniversities, fetchUniversity } from "@/shared/api/universities";
-import { cookies } from "next/headers";
 import Link from "next/link";
+import AddSubjectButton from "./_components/AddSubjectButton";
 import SubjectCard from "./_components/SubjectCard";
 
 export async function generateStaticParams() {
@@ -20,9 +20,6 @@ const UniversityPage = async ({
   const { id } = await params;
   const universityId = Number(id);
 
-  const cookieStore = await cookies();
-  const isAuthorized = !!cookieStore.get("access_token");
-
   const [university, subjects] = await Promise.all([
     fetchUniversity(universityId),
     fetchSubjectsByUniversity(universityId),
@@ -39,14 +36,7 @@ const UniversityPage = async ({
         </Link>
         <h1 className="text-2xl font-bold">{university.name} — Предметы</h1>
         <p className="text-sm text-neutral-500">{university.city.name}</p>
-        {isAuthorized && (
-          <Link
-            className="self-start px-4 py-2 rounded-lg bg-primary text-white font-medium hover:opacity-90 transition"
-            href={`/universities/${id}/add-subject`}
-          >
-            Добавить
-          </Link>
-        )}
+        <AddSubjectButton universityId={id} />
       </div>
 
       {subjects.length === 0 ? (

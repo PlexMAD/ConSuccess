@@ -1,6 +1,28 @@
-import { fetchPost } from "@/shared/api/posts";
+import { fetchPostsBySubject, fetchPost } from "@/shared/api/posts";
+import { fetchSubjectsByUniversity } from "@/shared/api/subjects";
+import { fetchUniversities } from "@/shared/api/universities";
 import Link from "next/link";
 import ImageGallery from "./_components/ImageGallery";
+
+export async function generateStaticParams() {
+  const universities = await fetchUniversities();
+  const params = await Promise.all(
+    universities.map(async (university) => {
+      const subjects = await fetchSubjectsByUniversity(university.id);
+      return Promise.all(
+        subjects.map(async (subject) => {
+          const posts = await fetchPostsBySubject(subject.id);
+          return posts.map((post) => ({
+            id: String(university.id),
+            subjectId: String(subject.id),
+            postId: String(post.id),
+          }));
+        }),
+      );
+    }),
+  );
+  return params.flat(2);
+}
 
 const PostPage = async ({
   params,

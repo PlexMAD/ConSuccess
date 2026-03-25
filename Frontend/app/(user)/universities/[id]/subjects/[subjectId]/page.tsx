@@ -1,9 +1,23 @@
 import { fetchPostsBySubject } from "@/shared/api/posts";
-import { fetchSubject } from "@/shared/api/subjects";
-import { fetchUniversity } from "@/shared/api/universities";
-import { cookies } from "next/headers";
+import { fetchSubjectsByUniversity, fetchSubject } from "@/shared/api/subjects";
+import { fetchUniversities, fetchUniversity } from "@/shared/api/universities";
 import Link from "next/link";
+import AddPostButton from "./_components/AddPostButton";
 import PostCard from "./_components/PostCard";
+
+export async function generateStaticParams() {
+  const universities = await fetchUniversities();
+  const params = await Promise.all(
+    universities.map(async (university) => {
+      const subjects = await fetchSubjectsByUniversity(university.id);
+      return subjects.map((subject) => ({
+        id: String(university.id),
+        subjectId: String(subject.id),
+      }));
+    }),
+  );
+  return params.flat();
+}
 
 const SubjectPage = async ({
   params,
@@ -13,9 +27,6 @@ const SubjectPage = async ({
   const { id, subjectId } = await params;
   const universityId = Number(id);
   const subjectIdNum = Number(subjectId);
-
-  const cookieStore = await cookies();
-  const isAuthorized = !!cookieStore.get("access_token");
 
   const [university, subject, posts] = await Promise.all([
     fetchUniversity(universityId),
@@ -36,14 +47,7 @@ const SubjectPage = async ({
           {university.name} — {subject.name}
         </h1>
         <p className="text-sm text-neutral-500"></p>
-        {isAuthorized && (
-          <Link
-            className="self-start px-4 py-2 rounded-lg bg-primary text-white font-medium hover:opacity-90 transition"
-            href={`/universities/${id}/subjects/${subjectId}/add-post`}
-          >
-            Добавить
-          </Link>
-        )}
+        <AddPostButton universityId={id} subjectId={subjectId} />
       </div>
 
       {posts.length === 0 ? (
