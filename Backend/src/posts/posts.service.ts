@@ -16,7 +16,10 @@ export class PostsService {
   getPostById(id: number) {
     return this.prisma.post.findUniqueOrThrow({
       where: { id },
-      include: { attachments: true },
+      include: {
+        attachments: true,
+        user: { select: { id: true, username: true, avatar: true } },
+      },
     });
   }
 

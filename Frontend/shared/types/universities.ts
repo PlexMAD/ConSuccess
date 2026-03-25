@@ -22,6 +22,12 @@ export type Attachment = {
     postId: number;
 }
 
+export type PostAuthor = {
+    id: number;
+    username: string;
+    avatar: string | null;
+}
+
 export type Post = {
     id: number;
     title: string;
@@ -30,4 +36,5 @@ export type Post = {
     userId: number;
     createdAt: string;
     attachments: Attachment[];
+    user?: PostAuthor;
 }
