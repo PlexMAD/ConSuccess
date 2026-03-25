@@ -4,6 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Prisma } from '@prisma/client';
 import { compareWithHash, encrypt } from 'src/utils/crypt';
 import { UsersService } from '../users/users.service';
 
@@ -30,14 +31,18 @@ export class AuthService {
 
   async register(username: string, pass: string) {
     const passwordHash = await encrypt(pass);
-    const createdUser = await this.usersService.createUser({
-      username,
-      passwordHash,
-    });
-    const payload = { id: createdUser.id, username: createdUser.username };
-
-    if (createdUser) {
+    try {
+      const createdUser = await this.usersService.createUser({
+        username,
+        passwordHash,
+      });
+      const payload = { id: createdUser.id, username: createdUser.username };
       return { access_token: await this.jwtService.signAsync(payload) };
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        throw new BadRequestException('Пользователь с таким логином уже существует');
+      }
+      throw error;
     }
   }
 }

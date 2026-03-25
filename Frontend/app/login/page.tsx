@@ -1,6 +1,7 @@
 "use client";
 
 import { checkMe, loginUser } from "@/shared/api/auth";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -108,6 +109,16 @@ const LoginPage = () => {
             Войти
           </button>
         </form>
+
+        <p className="mt-6 text-center text-sm text-slate-500">
+          <span>Нет аккаунта?</span>
+          <Link
+            href="/register"
+            className="text-sky-600 hover:underline font-medium block"
+          >
+            Зарегистрироваться
+          </Link>
+        </p>
       </div>
     </section>
   );
