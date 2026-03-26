@@ -40,7 +40,8 @@ const LoginPage = () => {
       const result = await loginUser(data);
 
       if (result.ok) {
-        window.location.reload();
+        router.push("/");
+        router.refresh();
       } else {
         console.log(result.message);
       }

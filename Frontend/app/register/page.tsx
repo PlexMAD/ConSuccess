@@ -3,6 +3,7 @@
 import { registerUser } from "@/shared/api/auth";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type RegisterFields = {
@@ -12,6 +13,7 @@ type RegisterFields = {
 };
 
 const RegisterPage = () => {
+  const router = useRouter();
 
   const {
     register,
@@ -28,7 +30,8 @@ const RegisterPage = () => {
       const result = await registerUser({ username, password });
 
       if (result.ok) {
-        window.location.assign("/");
+        router.push("/");
+        router.refresh();
       } else {
         setError("root", { message: (result as { message: string }).message });
       }
