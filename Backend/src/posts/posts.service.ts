@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -7,15 +11,15 @@ export class PostsService {
 
   getPostsBySubject(subjectId: number) {
     return this.prisma.post.findMany({
-      where: { subjectId },
+      where: { subjectId, visible: true },
       include: { attachments: true },
       orderBy: { createdAt: 'desc' },
     });
   }
 
   getPostById(id: number) {
-    return this.prisma.post.findUniqueOrThrow({
-      where: { id },
+    return this.prisma.post.findFirstOrThrow({
+      where: { id, visible: true },
       include: {
         attachments: true,
         user: { select: { id: true, username: true, avatar: true } },
@@ -41,6 +45,46 @@ export class PostsService {
         },
       },
       include: { attachments: true },
+    });
+  }
+
+  async updatePost(
+    id: number,
+    userId: number,
+    title: string,
+    body: string,
+    keepAttachmentIds: number[],
+    newImageUrls: string[],
+  ) {
+    const post = await this.prisma.post.findUnique({ where: { id } });
+    if (!post || !post.visible) throw new NotFoundException('Post not found');
+    if (post.userId !== userId) throw new ForbiddenException('Access denied');
+
+    await this.prisma.attachment.deleteMany({
+      where: { postId: id, id: { notIn: keepAttachmentIds } },
+    });
+
+    return this.prisma.post.update({
+      where: { id },
+      data: {
+        title,
+        body,
+        attachments: {
+          create: newImageUrls.map((url) => ({ url })),
+        },
+      },
+      include: { attachments: true },
+    });
+  }
+
+  async deletePost(id: number, userId: number) {
+    const post = await this.prisma.post.findUnique({ where: { id } });
+    if (!post || !post.visible) throw new NotFoundException('Post not found');
+    if (post.userId !== userId) throw new ForbiddenException('Access denied');
+
+    return this.prisma.post.update({
+      where: { id },
+      data: { visible: false },
     });
   }
 }

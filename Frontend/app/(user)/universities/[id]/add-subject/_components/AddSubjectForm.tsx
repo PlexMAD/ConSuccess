@@ -39,7 +39,7 @@ const AddSubjectForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md flex flex-col gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md flex flex-col gap-4 ml-1">
       <Link
         href={`/universities/${universityId}`}
         className="self-start text-sm text-neutral-500 hover:text-neutral-800 transition"

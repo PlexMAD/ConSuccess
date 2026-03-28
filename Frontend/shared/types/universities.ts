@@ -34,6 +34,7 @@ export type Post = {
     body: string;
     subjectId: number;
     userId: number;
+    visible: boolean;
     createdAt: string;
     attachments: Attachment[];
     user?: PostAuthor;

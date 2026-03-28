@@ -57,6 +57,7 @@ model Post {
   subjectId   Int?         @map("subject_id")
   title       String
   body        String
+  visible     Boolean      @default(true)
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime     @updatedAt @map("updated_at")
   attachments Attachment[]
