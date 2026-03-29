@@ -4,6 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 type FormValues = {
   name: string;
@@ -28,6 +29,7 @@ const AddSubjectForm = ({
   const onSubmit = async (values: FormValues) => {
     try {
       await axios.post(`/api/universities/${universityId}/subjects`, { name: values.name });
+      toast.success("Предмет добавлен");
       router.push(`/universities/${universityId}`);
     } catch (err) {
       const message =
@@ -59,7 +61,7 @@ const AddSubjectForm = ({
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium">Название предмета</label>
         <input
-          {...register("name", { required: "Введите название" })}
+          {...register("name", { required: "Введите название", maxLength: { value: 100, message: "Не более 100 символов" } })}
           placeholder="Введите название..."
           className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
         />

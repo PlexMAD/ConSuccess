@@ -4,6 +4,7 @@ import axios from "axios";
 import { Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const FavoriteButton = ({
   postId,
@@ -21,8 +22,10 @@ const FavoriteButton = ({
     try {
       if (isFavorited) {
         await axios.delete(`/api/favorites/${postId}`);
+        toast.success("Убрано из избранного");
       } else {
         await axios.post(`/api/favorites/${postId}`);
+        toast.success("Добавлено в избранное");
       }
       setIsFavorited((prev) => !prev);
       router.refresh();

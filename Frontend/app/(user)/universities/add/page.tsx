@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 type FormValues = {
   name: string;
@@ -51,6 +52,7 @@ const AddUniversityPage = () => {
       }
 
       await axios.post("/api/universities", formData);
+      toast.success("Университет добавлен");
       router.push("/universities");
     } catch (err) {
       const message =
@@ -75,7 +77,7 @@ const AddUniversityPage = () => {
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium">Название университета</label>
         <input
-          {...register("name", { required: "Введите название" })}
+          {...register("name", { required: "Введите название", maxLength: { value: 100, message: "Не более 100 символов" } })}
           placeholder="Введите название..."
           className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
         />

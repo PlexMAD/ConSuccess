@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const DeletePostButton = ({
   postId,
@@ -21,8 +22,10 @@ const DeletePostButton = ({
     setDeleting(true);
     try {
       await axios.delete(`/api/subjects/${subjectId}/posts/${postId}`);
+      toast.success("Пост удалён");
       router.push(backHref);
     } catch {
+      toast.error("Не удалось удалить пост");
       setDeleting(false);
       setOpen(false);
     }

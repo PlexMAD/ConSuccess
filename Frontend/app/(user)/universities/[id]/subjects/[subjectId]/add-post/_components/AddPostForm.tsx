@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import Image from "next/image";
+import { toast } from "sonner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
@@ -53,6 +54,7 @@ const AddPostForm = ({
         headers: { "Content-Type": "multipart/form-data" },
       });
 
+      toast.success("Материал опубликован");
       router.push(`/universities/${universityId}/subjects/${subjectId}`);
     } catch (err) {
       const message =
@@ -91,7 +93,7 @@ const AddPostForm = ({
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium">Заголовок</label>
         <input
-          {...register("title", { required: "Введите заголовок" })}
+          {...register("title", { required: "Введите заголовок", maxLength: { value: 60, message: "Не более 60 символов" } })}
           placeholder="Введите заголовок..."
           className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
         />
@@ -103,7 +105,7 @@ const AddPostForm = ({
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium">Текст</label>
         <textarea
-          {...register("body", { required: "Введите текст" })}
+          {...register("body", { required: "Введите текст", maxLength: { value: 5000, message: "Не более 5000 символов" } })}
           placeholder="Введите текст..."
           rows={8}
           className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary resize-none"

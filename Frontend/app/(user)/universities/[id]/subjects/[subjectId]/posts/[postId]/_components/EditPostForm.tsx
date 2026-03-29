@@ -3,6 +3,7 @@
 import { apiURL } from "@/shared/api/config";
 import { Attachment } from "@/shared/types/universities";
 import axios from "axios";
+import { toast } from "sonner";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -75,6 +76,7 @@ const EditPostForm = ({
         { headers: { "Content-Type": "multipart/form-data" } },
       );
 
+      toast.success("Изменения сохранены");
       onCancel();
       router.refresh();
     } catch (err) {
@@ -92,7 +94,7 @@ const EditPostForm = ({
   const totalImages = keepAttachmentIds.length + newImages.length;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 ml-1">
       <button
         type="button"
         onClick={onCancel}
@@ -110,7 +112,7 @@ const EditPostForm = ({
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium">Заголовок</label>
         <input
-          {...register("title", { required: "Введите заголовок" })}
+          {...register("title", { required: "Введите заголовок", maxLength: { value: 60, message: "Не более 60 символов" } })}
           className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
         />
         {errors.title && (
@@ -121,7 +123,7 @@ const EditPostForm = ({
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium">Текст</label>
         <textarea
-          {...register("body", { required: "Введите текст" })}
+          {...register("body", { required: "Введите текст", maxLength: { value: 5000, message: "Не более 5000 символов" } })}
           rows={8}
           className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary resize-none"
         />

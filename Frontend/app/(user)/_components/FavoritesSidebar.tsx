@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Star } from "../../_icons";
 
 const FavoritesSidebar = ({ initialFavorites }: { initialFavorites: FavoritePost[] }) => {
@@ -20,9 +21,11 @@ const FavoritesSidebar = ({ initialFavorites }: { initialFavorites: FavoritePost
     setFavorites((prev) => prev.filter((f) => f.postId !== postId));
     try {
       await axios.delete(`/api/favorites/${postId}`);
+      toast.success("Убрано из избранного");
       router.refresh();
     } catch {
       setFavorites(initialFavorites);
+      toast.error("Не удалось убрать из избранного");
     }
   };
 

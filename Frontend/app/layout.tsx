@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Geist, Inter } from "next/font/google";
+import { Toaster } from "sonner";
 import Header from "./_components/header/Header";
 import "./globals.css";
 
@@ -24,6 +25,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <body
         className={`${geistSans.variable} ${inter.variable} antialiased font-inter h-screen flex flex-col overflow-hidden`}
       >
+        <Toaster position="bottom-right" richColors />
         <Header />
         <main className="--background container mx-auto flex-1 min-h-0 overflow-hidden">{children}</main>
       </body>
