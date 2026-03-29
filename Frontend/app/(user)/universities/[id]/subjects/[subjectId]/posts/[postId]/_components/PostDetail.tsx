@@ -1,7 +1,7 @@
 "use client";
 
 import { apiURL } from "@/shared/api/config";
-import { Post } from "@/shared/types/universities";
+import { Post } from "@/shared/types/posts";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";

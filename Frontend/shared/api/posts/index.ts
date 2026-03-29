@@ -1,4 +1,4 @@
-import { Post } from "@/shared/types/universities";
+import { Post } from "@/shared/types/posts";
 import { axiosApi } from "../config";
 import { endpoints } from "../endpoints";
 

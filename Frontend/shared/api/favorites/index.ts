@@ -1,4 +1,4 @@
-import { FavoritePost } from "@/shared/types/universities";
+import { FavoritePost } from "@/shared/types/favorites";
 import { axiosApi } from "../config";
 import { endpoints } from "../endpoints";
 

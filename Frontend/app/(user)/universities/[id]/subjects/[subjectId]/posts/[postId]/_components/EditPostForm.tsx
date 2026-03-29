@@ -1,7 +1,7 @@
 "use client";
 
 import { apiURL } from "@/shared/api/config";
-import { Attachment } from "@/shared/types/universities";
+import { Attachment } from "@/shared/types/posts";
 import axios from "axios";
 import { toast } from "sonner";
 import Image from "next/image";

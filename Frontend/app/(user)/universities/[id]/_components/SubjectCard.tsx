@@ -1,5 +1,5 @@
 import { FolderIcon } from "@/app/_icons";
-import { Subject } from "@/shared/types/universities";
+import { Subject } from "@/shared/types/subjects";
 import Image from "next/image";
 import Link from "next/link";
 

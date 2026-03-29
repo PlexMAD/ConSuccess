@@ -1,4 +1,4 @@
-import { Subject } from "@/shared/types/universities";
+import { Subject } from "@/shared/types/subjects";
 import { axiosApi } from "../config";
 import { endpoints } from "../endpoints";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { FavoritePost } from "@/shared/types/universities";
+import { FavoritePost } from "@/shared/types/favorites";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
