@@ -14,11 +14,13 @@ export async function POST(req: Request) {
   }
 
   try {
-    const body = await req.json();
+    const contentType = req.headers.get("content-type") ?? "";
+    const body = Buffer.from(await req.arrayBuffer());
 
     const { data } = await axiosApi.post(endpoints.universities, body, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        "Content-Type": contentType,
       },
     });
 

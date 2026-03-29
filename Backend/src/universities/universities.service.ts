@@ -6,9 +6,9 @@ import { PrismaService } from 'src/prisma.service';
 export class UniversitiesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  createUniversity(name: string, cityId: number) {
+  createUniversity(name: string, cityId: number, avatar?: string) {
     return this.prisma.university.create({
-      data: { name, cityId },
+      data: { name, cityId, ...(avatar && { avatar }) },
       include: { city: true },
     });
   }

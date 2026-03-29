@@ -13,26 +13,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname, join } from 'path';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { imageUploadOptions } from 'src/utils/multer';
 import { PostsService } from './posts.service';
-
-const multerOptions = {
-  storage: diskStorage({
-    destination: join(process.cwd(), 'uploads'),
-    filename: (_req, file, cb) => {
-      const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-      cb(null, `${unique}${extname(file.originalname)}`);
-    },
-  }),
-  fileFilter: (_req, file, cb) => {
-    if (!file.mimetype.startsWith('image/')) {
-      return cb(new Error('Only image files are allowed'), false);
-    }
-    cb(null, true);
-  },
-};
 
 @Controller('subjects/:subjectId/posts')
 export class PostsController {
@@ -50,7 +33,7 @@ export class PostsController {
 
   @Post()
   @UseGuards(AuthGuard)
-  @UseInterceptors(FilesInterceptor('images', 5, multerOptions))
+  @UseInterceptors(FilesInterceptor('images', 5, imageUploadOptions))
   create(
     @Param('subjectId', ParseIntPipe) subjectId: number,
     @Body() body: { title: string; body: string },
@@ -69,7 +52,7 @@ export class PostsController {
 
   @Patch(':id')
   @UseGuards(AuthGuard)
-  @UseInterceptors(FilesInterceptor('images', 5, multerOptions))
+  @UseInterceptors(FilesInterceptor('images', 5, imageUploadOptions))
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body()
