@@ -7,16 +7,21 @@ import Link from "next/link";
 import { useState } from "react";
 import DeletePostButton from "./DeletePostButton";
 import EditPostForm from "./EditPostForm";
+import FavoriteButton from "./FavoriteButton";
 import ImageGallery from "./ImageGallery";
 
 const PostDetail = ({
   post,
   isOwner,
+  isFavorited,
+  isLoggedIn,
   universityId,
   subjectId,
 }: {
   post: Post;
   isOwner: boolean;
+  isFavorited: boolean;
+  isLoggedIn: boolean;
   universityId: string;
   subjectId: string;
 }) => {
@@ -51,21 +56,26 @@ const PostDetail = ({
         <div className="flex flex-col gap-1">
           <div className="flex items-start justify-between gap-2">
             <h1 className="text-2xl font-bold wrap-break-word">{post.title}</h1>
-            {isOwner && (
-              <div className="flex items-center gap-3 shrink-0 pt-1">
-                <button
-                  onClick={() => setEditMode(true)}
-                  className="text-sm text-neutral-500 hover:text-neutral-800 transition"
-                >
-                  Редактировать
-                </button>
-                <DeletePostButton
-                  postId={post.id}
-                  subjectId={subjectId}
-                  backHref={backHref}
-                />
-              </div>
-            )}
+            <div className="flex items-center gap-3 shrink-0 pt-1">
+              {isLoggedIn && (
+                <FavoriteButton postId={post.id} initialIsFavorited={isFavorited} />
+              )}
+              {isOwner && (
+                <>
+                  <button
+                    onClick={() => setEditMode(true)}
+                    className="text-sm text-neutral-500 hover:text-neutral-800 transition"
+                  >
+                    Редактировать
+                  </button>
+                  <DeletePostButton
+                    postId={post.id}
+                    subjectId={subjectId}
+                    backHref={backHref}
+                  />
+                </>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-2">

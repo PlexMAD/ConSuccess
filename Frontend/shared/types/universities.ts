@@ -40,3 +40,17 @@ export type Post = {
     attachments: Attachment[];
     user?: PostAuthor;
 }
+
+export type FavoritePost = {
+    userId: number;
+    postId: number;
+    post: {
+        id: number;
+        title: string;
+        subjectId: number | null;
+        subject: {
+            id: number;
+            universityId: number;
+        } | null;
+    };
+}
