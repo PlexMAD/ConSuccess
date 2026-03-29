@@ -25,7 +25,22 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <body
         className={`${geistSans.variable} ${inter.variable} antialiased font-inter h-screen flex flex-col overflow-hidden`}
       >
-        <Toaster position="bottom-right" richColors />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: "#067bc2",
+              border: "1px solid #0569a8",
+              borderRadius: "16px",
+              color: "white",
+              fontSize: "14px",
+              boxShadow: "0 4px 16px -2px rgb(6 123 194 / 0.4)",
+            },
+            classNames: {
+              error: "!bg-red-500 !border-red-600 !shadow-red-200",
+            },
+          }}
+        />
         <Header />
         <main className="--background container mx-auto flex-1 min-h-0 overflow-hidden">{children}</main>
       </body>

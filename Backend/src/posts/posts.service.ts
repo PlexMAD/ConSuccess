@@ -17,14 +17,16 @@ export class PostsService {
     });
   }
 
-  getPostById(id: number) {
-    return this.prisma.post.findFirstOrThrow({
+  async getPostById(id: number) {
+    const post = await this.prisma.post.findFirst({
       where: { id, visible: true },
       include: {
         attachments: true,
         user: { select: { id: true, username: true, avatar: true } },
       },
     });
+    if (!post) throw new NotFoundException('Post not found');
+    return post;
   }
 
   createPost(

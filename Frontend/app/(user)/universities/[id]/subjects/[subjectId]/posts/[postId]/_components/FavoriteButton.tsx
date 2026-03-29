@@ -3,7 +3,7 @@
 import axios from "axios";
 import { Star } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const FavoriteButton = ({
@@ -15,6 +15,10 @@ const FavoriteButton = ({
 }) => {
   const router = useRouter();
   const [isFavorited, setIsFavorited] = useState(initialIsFavorited);
+
+  useEffect(() => {
+    setIsFavorited(initialIsFavorited);
+  }, [initialIsFavorited]);
   const [loading, setLoading] = useState(false);
 
   const toggle = async () => {
