@@ -17,6 +17,7 @@ type FormValues = {
 const AddUniversityPage = () => {
   const router = useRouter();
   const [cities, setCities] = useState<City[]>([]);
+  const [citiesLoading, setCitiesLoading] = useState(true);
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -29,7 +30,10 @@ const AddUniversityPage = () => {
   } = useForm<FormValues>();
 
   useEffect(() => {
-    fetchCities().then(setCities).catch(console.error);
+    fetchCities()
+      .then(setCities)
+      .catch(console.error)
+      .finally(() => setCitiesLoading(false));
   }, []);
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,9 +95,12 @@ const AddUniversityPage = () => {
         <select
           {...register("cityId", { required: "Выберите город", validate: (v) => Number(v) !== 0 || "Выберите город" })}
           defaultValue=""
-          className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
+          disabled={citiesLoading}
+          className="px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <option value="" disabled>Выберите город</option>
+          <option value="" disabled>
+            {citiesLoading ? "Загрузка городов..." : "Выберите город"}
+          </option>
           {cities.map((city) => (
             <option key={city.id} value={city.id}>
               {city.name}

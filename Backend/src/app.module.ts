@@ -7,6 +7,7 @@ import { FavoritesController } from './favorites/favorites.controller';
 import { FavoritesService } from './favorites/favorites.service';
 import { PrismaModule } from './prisma.module';
 import { PostsController } from './posts/posts.controller';
+import { RecentPostsController } from './posts/recent-posts.controller';
 import { PostsService } from './posts/posts.service';
 import { SubjectsController } from './subjects/subjects.controller';
 import { SubjectsService } from './subjects/subjects.service';
@@ -23,7 +24,7 @@ import { UsersService } from './users/users.service';
       isGlobal: true,
     }),
   ],
-  controllers: [UsersController, UniversitiesController, CitiesController, SubjectsController, PostsController, FavoritesController],
+  controllers: [UsersController, UniversitiesController, CitiesController, SubjectsController, PostsController, RecentPostsController, FavoritesController],
   providers: [UsersService, UniversitiesService, CitiesService, SubjectsService, PostsService, FavoritesService],
 })
 export class AppModule {}

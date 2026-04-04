@@ -38,6 +38,9 @@ const PostCard = ({
             {post.title}
           </h3>
           <p className="line-clamp-2 text-sm text-neutral-500">{post.body}</p>
+          <p className="text-xs text-neutral-400">
+            {new Date(post.createdAt).toLocaleDateString("ru-RU")}
+          </p>
           <Link
             className="mt-auto text-sm font-medium text-primary"
             href={`/universities/${universityId}/subjects/${subjectId}/posts/${post.id}`}

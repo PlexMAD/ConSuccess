@@ -10,6 +10,11 @@ export type PostAuthor = {
     avatar: string | null;
 }
 
+export type RecentPost = Post & {
+    subject: { id: number; universityId: number; name: string };
+    user: PostAuthor;
+}
+
 export type Post = {
     id: number;
     title: string;

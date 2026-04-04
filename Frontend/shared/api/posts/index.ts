@@ -1,6 +1,13 @@
-import { Post } from "@/shared/types/posts";
+import { Post, RecentPost } from "@/shared/types/posts";
 import { axiosApi } from "../config";
 import { endpoints } from "../endpoints";
+
+export const fetchRecentPosts = async (limit = 20) => {
+  const response = await axiosApi.get<RecentPost[]>(
+    `${endpoints.posts}?limit=${limit}`,
+  );
+  return response.data;
+};
 
 export const fetchPostsBySubject = async (subjectId: number) => {
   const response = await axiosApi.get<Post[]>(

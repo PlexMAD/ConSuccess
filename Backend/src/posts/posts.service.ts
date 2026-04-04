@@ -9,6 +9,19 @@ import { PrismaService } from 'src/prisma.service';
 export class PostsService {
   constructor(private readonly prisma: PrismaService) {}
 
+  getRecentPosts(limit = 20) {
+    return this.prisma.post.findMany({
+      where: { visible: true },
+      include: {
+        attachments: true,
+        user: { select: { id: true, username: true, avatar: true } },
+        subject: { select: { id: true, universityId: true, name: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+    });
+  }
+
   getPostsBySubject(subjectId: number) {
     return this.prisma.post.findMany({
       where: { subjectId, visible: true },
