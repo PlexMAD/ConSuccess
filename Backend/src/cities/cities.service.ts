@@ -8,4 +8,8 @@ export class CitiesService {
   getAllCities() {
     return this.prisma.city.findMany();
   }
+
+  createCity(name: string) {
+    return this.prisma.city.create({ data: { name } });
+  }
 }

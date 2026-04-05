@@ -18,6 +18,10 @@ const AddUniversityPage = () => {
   const router = useRouter();
   const [cities, setCities] = useState<City[]>([]);
   const [citiesLoading, setCitiesLoading] = useState(true);
+  const [showNewCityInput, setShowNewCityInput] = useState(false);
+  const [newCityName, setNewCityName] = useState("");
+  const [addingCity, setAddingCity] = useState(false);
+  const [newCityError, setNewCityError] = useState<string | null>(null);
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -26,6 +30,7 @@ const AddUniversityPage = () => {
     register,
     handleSubmit,
     setError,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
 
@@ -43,6 +48,32 @@ const AddUniversityPage = () => {
       setLogoPreview(URL.createObjectURL(file));
     } else {
       setLogoPreview(null);
+    }
+  };
+
+  const handleAddCity = async () => {
+    const trimmed = newCityName.trim();
+    if (!trimmed) {
+      setNewCityError("Введите название города");
+      return;
+    }
+    setAddingCity(true);
+    setNewCityError(null);
+    try {
+      const { data: city } = await axios.post<City>("/api/cities", { name: trimmed });
+      setCities((prev) => [...prev, city]);
+      setValue("cityId", city.id);
+      setNewCityName("");
+      setShowNewCityInput(false);
+      toast.success(`Город «${city.name}» добавлен`);
+    } catch (err) {
+      const message =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : "Не удалось добавить город";
+      setNewCityError(message);
+    } finally {
+      setAddingCity(false);
     }
   };
 
@@ -109,6 +140,47 @@ const AddUniversityPage = () => {
         </select>
         {errors.cityId && (
           <p className="text-xs text-red-500">{errors.cityId.message}</p>
+        )}
+
+        {!showNewCityInput ? (
+          <button
+            type="button"
+            onClick={() => setShowNewCityInput(true)}
+            className="self-start text-sm text-primary hover:underline mt-1"
+          >
+            + Добавить город
+          </button>
+        ) : (
+          <div className="flex flex-col gap-1 mt-1">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newCityName}
+                onChange={(e) => setNewCityName(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddCity())}
+                placeholder="Название города..."
+                className="flex-1 px-3 py-1.5 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <button
+                type="button"
+                onClick={handleAddCity}
+                disabled={addingCity}
+                className="px-3 py-1.5 text-sm rounded-lg bg-primary text-white hover:opacity-90 transition disabled:opacity-50"
+              >
+                {addingCity ? "..." : "Создать"}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setShowNewCityInput(false); setNewCityName(""); setNewCityError(null); }}
+                className="px-3 py-1.5 text-sm rounded-lg border border-gray-200 hover:bg-slate-50 transition"
+              >
+                Отмена
+              </button>
+            </div>
+            {newCityError && (
+              <p className="text-xs text-red-500">{newCityError}</p>
+            )}
+          </div>
         )}
       </div>
 
