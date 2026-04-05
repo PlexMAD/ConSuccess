@@ -5,4 +5,5 @@ export const endpoints = {
     subjects: "/subjects",
     favorites: "/favorites",
     posts: "/posts",
+    knowledgePosts: "/knowledge-posts",
 }

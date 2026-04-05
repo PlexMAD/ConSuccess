@@ -15,7 +15,14 @@ export class PostsService {
       include: {
         attachments: true,
         user: { select: { id: true, username: true, avatar: true } },
-        subject: { select: { id: true, universityId: true, name: true } },
+        subject: {
+          select: {
+            id: true,
+            universityId: true,
+            name: true,
+            university: { select: { name: true } },
+          },
+        },
       },
       orderBy: { createdAt: 'desc' },
       take: limit,
@@ -42,6 +49,18 @@ export class PostsService {
     return post;
   }
 
+  getKnowledgePosts(limit = 20) {
+    return this.prisma.post.findMany({
+      where: { subjectId: null, visible: true },
+      include: {
+        attachments: true,
+        user: { select: { id: true, username: true, avatar: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+    });
+  }
+
   createPost(
     subjectId: number,
     userId: number,
@@ -54,6 +73,25 @@ export class PostsService {
         title,
         body,
         subjectId,
+        userId,
+        attachments: {
+          create: imageUrls.map((url) => ({ url })),
+        },
+      },
+      include: { attachments: true },
+    });
+  }
+
+  createKnowledgePost(
+    userId: number,
+    title: string,
+    body: string,
+    imageUrls: string[],
+  ) {
+    return this.prisma.post.create({
+      data: {
+        title,
+        body,
         userId,
         attachments: {
           create: imageUrls.map((url) => ({ url })),

@@ -3,19 +3,7 @@ import { Post } from "@/shared/types/posts";
 import Image from "next/image";
 import Link from "next/link";
 
-const PostCard = ({
-  post,
-  universityId,
-  subjectId,
-  universityName,
-  subjectName,
-}: {
-  post: Post;
-  universityId: number;
-  subjectId: number;
-  universityName?: string;
-  subjectName?: string;
-}) => {
+const KnowledgePostCard = ({ post }: { post: Post }) => {
   const firstImage = post.attachments?.[0];
 
   return (
@@ -38,11 +26,7 @@ const PostCard = ({
           </div>
         )}
         <div className="flex flex-1 flex-col gap-2 p-4">
-          {universityName && subjectName && (
-            <p className="text-xs text-neutral-400 truncate">
-              {universityName} · {subjectName}
-            </p>
-          )}
+          <p className="text-xs text-neutral-400">Знания</p>
           <h3 className="line-clamp-2 text-base font-semibold leading-5 text-slate-900">
             {post.title}
           </h3>
@@ -52,7 +36,7 @@ const PostCard = ({
           </p>
           <Link
             className="mt-auto text-sm font-medium text-primary"
-            href={`/universities/${universityId}/subjects/${subjectId}/posts/${post.id}`}
+            href={`/knowledge/posts/${post.id}`}
           >
             Открыть →
           </Link>
@@ -62,4 +46,4 @@ const PostCard = ({
   );
 };
 
-export default PostCard;
+export default KnowledgePostCard;

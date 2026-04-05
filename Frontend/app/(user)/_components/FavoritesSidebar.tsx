@@ -44,8 +44,12 @@ const FavoritesSidebar = ({ initialFavorites }: { initialFavorites: FavoritePost
             Нет избранных
           </p>
         ) : (
-          favorites.map((fav) =>
-            fav.post.subject ? (
+          favorites.map((fav) => {
+            const href = fav.post.subject
+              ? `/universities/${fav.post.subject.universityId}/subjects/${fav.post.subjectId}/posts/${fav.post.id}`
+              : `/knowledge/posts/${fav.post.id}`;
+
+            return (
               <div key={fav.postId} className="group relative flex flex-col gap-1.5 rounded-2xl bg-white shadow-md p-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
                 <button
                   onClick={() => remove(fav.postId)}
@@ -57,15 +61,12 @@ const FavoritesSidebar = ({ initialFavorites }: { initialFavorites: FavoritePost
                 <p className="text-xs font-semibold text-slate-900 line-clamp-2 leading-snug pr-3">
                   {fav.post.title}
                 </p>
-                <Link
-                  href={`/universities/${fav.post.subject.universityId}/subjects/${fav.post.subjectId}/posts/${fav.post.id}`}
-                  className="text-xs font-medium text-primary mt-auto"
-                >
+                <Link href={href} className="text-xs font-medium text-primary mt-auto">
                   Открыть →
                 </Link>
               </div>
-            ) : null,
-          )
+            );
+          })
         )}
       </div>
     </div>

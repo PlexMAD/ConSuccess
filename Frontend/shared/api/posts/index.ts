@@ -22,3 +22,17 @@ export const fetchPost = async (subjectId: number, postId: number) => {
   );
   return response.data;
 };
+
+export const fetchKnowledgePosts = async (limit = 20) => {
+  const response = await axiosApi.get<Post[]>(
+    `${endpoints.knowledgePosts}?limit=${limit}`,
+  );
+  return response.data;
+};
+
+export const fetchKnowledgePost = async (postId: number) => {
+  const response = await axiosApi.get<Post>(
+    `${endpoints.knowledgePosts}/${postId}`,
+  );
+  return response.data;
+};

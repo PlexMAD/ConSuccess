@@ -11,7 +11,7 @@ export type PostAuthor = {
 }
 
 export type RecentPost = Post & {
-    subject: { id: number; universityId: number; name: string };
+    subject: { id: number; universityId: number; name: string; university: { name: string } } | null;
     user: PostAuthor;
 }
 
