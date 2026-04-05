@@ -43,6 +43,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         />
         <Header />
         <main className="--background container mx-auto flex-1 min-h-0 overflow-hidden">{children}</main>
+        <footer className="shrink-0 text-center text-neutral-400 py-5">
+          Сделано в Московском Политехе. 2026
+        </footer>
       </body>
     </html>
   );

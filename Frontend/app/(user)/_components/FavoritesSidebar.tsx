@@ -30,7 +30,7 @@ const FavoritesSidebar = ({ initialFavorites }: { initialFavorites: FavoritePost
   };
 
   return (
-    <div className="rounded-4xl h-183 bg-white w-50 mr-5 flex flex-col shrink-0 overflow-hidden">
+    <div className="rounded-4xl h-full bg-white w-50 mr-5 flex flex-col shrink-0 overflow-hidden">
       <div className="bg-orange-400 w-full h-15 rounded-t-4xl flex items-center justify-center shrink-0">
         <span className="flex items-center gap-3 text-white text-xl font-bold">
           <Image src={Star} width={32} height={32} alt="star" />
