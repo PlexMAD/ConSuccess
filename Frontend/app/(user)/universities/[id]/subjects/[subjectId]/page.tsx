@@ -3,7 +3,7 @@ import { fetchSubjectsByUniversity, fetchSubject } from "@/shared/api/subjects";
 import { fetchUniversities, fetchUniversity } from "@/shared/api/universities";
 import Link from "next/link";
 import AddPostButton from "./_components/AddPostButton";
-import PostCard from "./_components/PostCard";
+import PostCard from "@/app/_components/shared/PostCard";
 
 export async function generateStaticParams() {
   const universities = await fetchUniversities();

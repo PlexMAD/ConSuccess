@@ -1,6 +1,6 @@
 import { fetchKnowledgePosts } from "@/shared/api/posts";
 import AddKnowledgePostButton from "./_components/AddKnowledgePostButton";
-import KnowledgePostCard from "./_components/KnowledgePostCard";
+import KnowledgePostCard from "@/app/_components/shared/KnowledgePostCard";
 
 const KnowledgePage = async () => {
   const posts = await fetchKnowledgePosts();

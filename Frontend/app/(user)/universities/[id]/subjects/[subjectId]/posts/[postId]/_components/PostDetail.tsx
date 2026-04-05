@@ -7,8 +7,8 @@ import Link from "next/link";
 import { useState } from "react";
 import DeletePostButton from "./DeletePostButton";
 import EditPostForm from "./EditPostForm";
-import FavoriteButton from "./FavoriteButton";
-import ImageGallery from "./ImageGallery";
+import FavoriteButton from "@/app/_components/shared/FavoriteButton";
+import ImageGallery from "@/app/_components/shared/ImageGallery";
 
 const PostDetail = ({
   post,

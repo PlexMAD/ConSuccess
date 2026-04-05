@@ -5,8 +5,8 @@ import { Post } from "@/shared/types/posts";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import FavoriteButton from "@/app/(user)/universities/[id]/subjects/[subjectId]/posts/[postId]/_components/FavoriteButton";
-import ImageGallery from "@/app/(user)/universities/[id]/subjects/[subjectId]/posts/[postId]/_components/ImageGallery";
+import FavoriteButton from "@/app/_components/shared/FavoriteButton";
+import ImageGallery from "@/app/_components/shared/ImageGallery";
 import KnowledgeDeletePostButton from "./KnowledgeDeletePostButton";
 import KnowledgeEditPostForm from "./KnowledgeEditPostForm";
 

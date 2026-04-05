@@ -1,7 +1,7 @@
 import { Heading } from "@/app/_components/typography/Heading";
 import { fetchRecentPosts } from "@/shared/api/posts";
-import KnowledgePostCard from "./knowledge/_components/KnowledgePostCard";
-import PostCard from "./universities/[id]/subjects/[subjectId]/_components/PostCard";
+import KnowledgePostCard from "@/app/_components/shared/KnowledgePostCard";
+import PostCard from "@/app/_components/shared/PostCard";
 
 export default async function Home() {
   const posts = await fetchRecentPosts();
