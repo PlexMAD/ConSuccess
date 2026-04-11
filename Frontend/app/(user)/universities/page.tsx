@@ -8,7 +8,7 @@ export const UniversitiesPage = async () => {
   return (
     <div className="flex flex-col gap-4">
       <AddUniversityButton />
-      <ul className="grid grid-cols-4 gap-4">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {universities.map((university) => (
           <UniversityCard key={university.id} university={university} />
         ))}

@@ -13,7 +13,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="flex h-full overflow-hidden">
-      <FavoritesSidebar initialFavorites={favorites} />
+      <div className="hidden md:block"><FavoritesSidebar initialFavorites={favorites} /></div>
       <div className="flex-1 min-w-0 overflow-y-auto">{children}</div>
     </div>
   );

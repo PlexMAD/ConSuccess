@@ -54,9 +54,9 @@ const PostDetail = ({
 
       <div className="flex flex-col gap-4 rounded-2xl border border-neutral-200 bg-white p-4">
         <div className="flex flex-col gap-1">
-          <div className="flex items-start justify-between gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
             <h1 className="text-2xl font-bold wrap-break-word min-w-0 break-all">{post.title}</h1>
-            <div className="flex items-center gap-3 shrink-0 pt-1">
+            <div className="flex items-center gap-3 shrink-0 sm:pt-1">
               {isLoggedIn && (
                 <FavoriteButton postId={post.id} initialIsFavorited={isFavorited} />
               )}

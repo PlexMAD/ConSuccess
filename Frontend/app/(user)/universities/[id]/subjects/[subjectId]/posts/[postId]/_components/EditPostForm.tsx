@@ -94,7 +94,7 @@ const EditPostForm = ({
   const totalImages = keepAttachmentIds.length + newImages.length;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 ml-1">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 max-w-2xl w-full">
       <button
         type="button"
         onClick={onCancel}

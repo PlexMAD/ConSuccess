@@ -60,7 +60,7 @@ const AddKnowledgePostForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-6xl flex flex-col gap-4 ml-1"
+      className="max-w-2xl w-full flex flex-col gap-4"
     >
       <Link
         href="/knowledge"

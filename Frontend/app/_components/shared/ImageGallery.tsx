@@ -10,13 +10,13 @@ const ImageGallery = ({ attachments, title }: { attachments: Attachment[]; title
 
   return (
     <>
-      <div className="grid grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
         {attachments.map((attachment) => (
           <button
             key={attachment.id}
             type="button"
             onClick={() => setSelected(`${apiURL}${attachment.url}`)}
-            className="group relative w-full h-40 overflow-hidden rounded-xl border border-neutral-200 ring-1 ring-neutral-100 focus:outline-none hover:ring-primary hover:border-primary transition"
+            className="group relative w-full h-32 sm:h-40 overflow-hidden rounded-xl border border-neutral-200 ring-1 ring-neutral-100 focus:outline-none hover:ring-primary hover:border-primary transition"
           >
             <Image
               src={`${apiURL}${attachment.url}`}
@@ -47,7 +47,7 @@ const ImageGallery = ({ attachments, title }: { attachments: Attachment[]; title
             ×
           </button>
           <div
-            className="w-[60vw]"
+            className="w-[90vw] sm:w-[60vw]"
             onClick={(e) => e.stopPropagation()}
           >
             <Image

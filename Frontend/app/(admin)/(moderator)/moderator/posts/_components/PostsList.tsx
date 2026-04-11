@@ -62,18 +62,17 @@ export function PostsList({ initialPosts }: { initialPosts: RecentPost[] }) {
 
             {/* Содержимое */}
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-0.5">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-0.5">
                 <span className="text-xs text-slate-400">{post.user.username}</span>
                 <span className="text-xs text-slate-300">·</span>
                 <span className="text-xs text-slate-400">
                   {new Date(post.createdAt).toLocaleDateString("ru-RU")}
                 </span>
                 <span
-                  className={`ml-1 rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${
-                    post.subject
-                      ? "bg-blue-50 text-primary"
-                      : "bg-slate-100 text-slate-500"
-                  }`}
+                  className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${post.subject
+                    ? "bg-blue-50 text-primary"
+                    : "bg-slate-100 text-slate-500"
+                    }`}
                 >
                   {post.subject ? post.subject.name : "Знания"}
                 </span>
@@ -82,8 +81,7 @@ export function PostsList({ initialPosts }: { initialPosts: RecentPost[] }) {
               <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{post.body}</p>
             </div>
 
-            {/* Действия */}
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex flex-col items-end gap-1.5 sm:flex-row sm:items-center sm:gap-2 shrink-0">
               <Link
                 href={getPostHref(post)}
                 className="text-xs text-primary font-medium hover:underline"
@@ -105,7 +103,6 @@ export function PostsList({ initialPosts }: { initialPosts: RecentPost[] }) {
         )}
       </div>
 
-      {/* Confirm modal */}
       {confirmId !== null && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
