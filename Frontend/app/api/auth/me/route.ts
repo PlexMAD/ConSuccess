@@ -15,14 +15,16 @@ export async function GET() {
   }
 
   try {
-    const { data } = await axiosApi.get<{ id: number; username: string }>(
-      `${endpoints.auth}/me`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+    const { data } = await axiosApi.get<{
+      id: number;
+      username: string;
+      role: string;
+      avatar: string | null;
+    }>(`${endpoints.auth}/me`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
-    );
+    });
 
     return NextResponse.json({
       ok: true,

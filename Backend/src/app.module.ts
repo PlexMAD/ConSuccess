@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { AdminController } from './admin/admin.controller';
 import { AuthModule } from './auth/auth.module';
 import { CitiesController } from './cities/cities.controller';
 import { CitiesService } from './cities/cities.service';
@@ -25,7 +26,7 @@ import { UsersService } from './users/users.service';
       isGlobal: true,
     }),
   ],
-  controllers: [UsersController, UniversitiesController, CitiesController, SubjectsController, PostsController, RecentPostsController, KnowledgePostsController, FavoritesController],
+  controllers: [AdminController, UsersController, UniversitiesController, CitiesController, SubjectsController, PostsController, RecentPostsController, KnowledgePostsController, FavoritesController],
   providers: [UsersService, UniversitiesService, CitiesService, SubjectsService, PostsService, FavoritesService],
 })
 export class AppModule {}

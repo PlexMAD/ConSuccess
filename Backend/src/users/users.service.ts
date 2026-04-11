@@ -11,7 +11,10 @@ export class UsersService {
   }
 
   getAllUsers() {
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({
+      select: { id: true, username: true, role: true, avatar: true, createdAt: true },
+      orderBy: { id: 'asc' },
+    });
   }
 
   getUser(id: number) {

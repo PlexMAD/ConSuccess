@@ -5,18 +5,20 @@ import { Navlink } from "./Navlink";
 
 const Header = () => {
   return (
-    <header className="w-screen bg-white py-3 mb-3.25">
-      <div className="container flex justify-between items-center mx-auto px-4">
-        <Image alt="logo" src={ConSuccessLogo} />
-        <nav className="hidden md:flex px-5.5 py-5.5 bg-primary rounded-2xl items-center text-center ml-1">
-          <ul className="flex flex-row justify-between gap-40 px-4 font-geist uppercase text-white">
+    <header className="w-full bg-white py-3 mb-3.25">
+      <div className="container flex items-center gap-4 mx-auto px-4">
+        <Image alt="logo" src={ConSuccessLogo} className="shrink-0" />
+        <nav className="hidden md:flex flex-1 px-4 py-3 bg-primary rounded-2xl items-center justify-center">
+          <ul className="flex flex-row gap-6 lg:gap-10 xl:gap-16 px-2 font-geist uppercase text-white">
             <Navlink href={"/"} title={"Главная"} />
             <Navlink href={"/universities"} title={"Вузы"} />
             <Navlink href={"/knowledge"} title={"Знания"} />
             <Navlink href={"/about"} title={"О продукте"} />
           </ul>
         </nav>
-        <HeaderProfile />
+        <div className="shrink-0 ml-auto md:ml-0">
+          <HeaderProfile />
+        </div>
       </div>
     </header>
   );

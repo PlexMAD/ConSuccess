@@ -61,7 +61,7 @@ export class KnowledgePostsController {
       keepAttachmentIds?: string | string[];
     },
     @UploadedFiles() files: Express.Multer.File[],
-    @Req() req: { user: { id: number } },
+    @Req() req: { user: { id: number; role: string } },
   ) {
     const newImageUrls = (files ?? []).map((f) => `/uploads/${f.filename}`);
     const raw = body.keepAttachmentIds;
@@ -73,6 +73,7 @@ export class KnowledgePostsController {
     return this.postsService.updatePost(
       id,
       req.user.id,
+      req.user.role,
       body.title,
       body.body,
       keepIds,
@@ -84,8 +85,8 @@ export class KnowledgePostsController {
   @UseGuards(AuthGuard)
   deletePost(
     @Param('id', ParseIntPipe) id: number,
-    @Req() req: { user: { id: number } },
+    @Req() req: { user: { id: number; role: string } },
   ) {
-    return this.postsService.deletePost(id, req.user.id);
+    return this.postsService.deletePost(id, req.user.id, req.user.role);
   }
 }

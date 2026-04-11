@@ -10,13 +10,13 @@ async function getAccessToken(): Promise<string | null> {
   return cookieStore.get("access_token")?.value ?? null;
 }
 
-async function getCurrentUserId(accessToken: string): Promise<number | null> {
+async function getCurrentUser(accessToken: string): Promise<{ id: number; role: string } | null> {
   try {
-    const { data } = await axiosApi.get<{ id: number }>(
+    const { data } = await axiosApi.get<{ id: number; role: string }>(
       `${endpoints.auth}/me`,
       { headers: { Authorization: `Bearer ${accessToken}` } },
     );
-    return data.id;
+    return data;
   } catch {
     return null;
   }
@@ -30,21 +30,22 @@ const KnowledgePostPage = async ({
   const { postId } = await params;
   const accessToken = await getAccessToken();
 
-  const [post, currentUserId, favorites] = await Promise.all([
+  const [post, currentUser, favorites] = await Promise.all([
     fetchKnowledgePost(Number(postId)),
-    accessToken ? getCurrentUserId(accessToken) : Promise.resolve(null),
+    accessToken ? getCurrentUser(accessToken) : Promise.resolve(null),
     accessToken
       ? fetchFavorites(accessToken).catch(() => [])
       : Promise.resolve([]),
   ]);
 
-  const isOwner = currentUserId !== null && post.userId === currentUserId;
-  const isFavorited = favorites.some((f) => f.postId === Number(postId));
+  const isOwner = currentUser !== null && post.userId === currentUser.id;
+  const canModify = isOwner || ["ADMIN", "MODERATOR"].includes(currentUser?.role ?? "");
+  const isFavorited = favorites.some((f: { postId: number }) => f.postId === Number(postId));
 
   return (
     <KnowledgePostDetail
       post={post}
-      isOwner={isOwner}
+      isOwner={canModify}
       isFavorited={isFavorited}
       isLoggedIn={accessToken !== null}
     />

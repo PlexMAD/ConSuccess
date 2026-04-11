@@ -49,6 +49,25 @@ export class PostsService {
     return post;
   }
 
+  getAllPostsForAdmin() {
+    return this.prisma.post.findMany({
+      where: { visible: true },
+      include: {
+        attachments: true,
+        user: { select: { id: true, username: true, avatar: true } },
+        subject: {
+          select: {
+            id: true,
+            universityId: true,
+            name: true,
+            university: { select: { name: true } },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
   getKnowledgePosts(limit = 20) {
     return this.prisma.post.findMany({
       where: { subjectId: null, visible: true },
@@ -104,6 +123,7 @@ export class PostsService {
   async updatePost(
     id: number,
     userId: number,
+    userRole: string,
     title: string,
     body: string,
     keepAttachmentIds: number[],
@@ -111,7 +131,7 @@ export class PostsService {
   ) {
     const post = await this.prisma.post.findUnique({ where: { id } });
     if (!post || !post.visible) throw new NotFoundException('Post not found');
-    if (post.userId !== userId) throw new ForbiddenException('Access denied');
+    if (post.userId !== userId && !['ADMIN', 'MODERATOR'].includes(userRole)) throw new ForbiddenException('Access denied');
 
     await this.prisma.attachment.deleteMany({
       where: { postId: id, id: { notIn: keepAttachmentIds } },
@@ -130,10 +150,10 @@ export class PostsService {
     });
   }
 
-  async deletePost(id: number, userId: number) {
+  async deletePost(id: number, userId: number, userRole: string) {
     const post = await this.prisma.post.findUnique({ where: { id } });
     if (!post || !post.visible) throw new NotFoundException('Post not found');
-    if (post.userId !== userId) throw new ForbiddenException('Access denied');
+    if (post.userId !== userId && !['ADMIN', 'MODERATOR'].includes(userRole)) throw new ForbiddenException('Access denied');
 
     return this.prisma.post.update({
       where: { id },

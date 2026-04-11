@@ -44,6 +44,6 @@ export class AuthController {
   async me(@Req() req: Request) {
     const { id, username } = req['user'] as { id: number; username: string };
     const user = await this.usersService.getUser(id);
-    return { id, username, avatar: user?.avatar ?? null };
+    return { id, username, avatar: user?.avatar ?? null, role: user?.role ?? 'USER' };
   }
 }

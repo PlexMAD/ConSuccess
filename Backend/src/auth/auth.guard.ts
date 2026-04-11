@@ -11,6 +11,7 @@ import { Request } from 'express';
 type TokenPayload = {
   id: number;
   username: string;
+  role: string;
 };
 
 @Injectable()

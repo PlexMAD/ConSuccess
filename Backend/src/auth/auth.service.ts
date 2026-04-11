@@ -23,7 +23,7 @@ export class AuthService {
     if (!(await compareWithHash(pass, user.passwordHash))) {
       throw new UnauthorizedException('Wrong password');
     }
-    const payload = { id: user.id, username: user.username };
+    const payload = { id: user.id, username: user.username, role: user.role };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
@@ -36,7 +36,7 @@ export class AuthService {
         username,
         passwordHash,
       });
-      const payload = { id: createdUser.id, username: createdUser.username };
+      const payload = { id: createdUser.id, username: createdUser.username, role: createdUser.role };
       return { access_token: await this.jwtService.signAsync(payload) };
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {

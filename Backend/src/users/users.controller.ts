@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Body,
   Controller,
   ForbiddenException,
   Get,
@@ -13,7 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Prisma } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -24,8 +25,25 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getAll() {
+  @UseGuards(AuthGuard)
+  getAll(@Req() req: { user: { role: string } }) {
+    if (req.user.role !== 'ADMIN') {
+      throw new ForbiddenException('Admin access required');
+    }
     return this.usersService.getAllUsers();
+  }
+
+  @Patch(':id/role')
+  @UseGuards(AuthGuard)
+  async updateRole(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: { role: Role },
+    @Req() req: { user: { role: string } },
+  ) {
+    if (req.user.role !== 'ADMIN') {
+      throw new ForbiddenException('Admin access required');
+    }
+    return this.usersService.updateUser(id, { role: body.role });
   }
 
   @Post()
