@@ -21,7 +21,7 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
     redirect("/login");
   }
 
-  return <>{children}</>;
+  return <div className="h-full overflow-y-auto">{children}</div>;
 };
 
 export default AdminLayout;
