@@ -2,7 +2,9 @@ import { fetchPost } from "@/shared/api/posts";
 import { fetchFavorites } from "@/shared/api/favorites";
 import { axiosApi } from "@/shared/api/config";
 import { endpoints } from "@/shared/api/endpoints";
+import axios from "axios";
 import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
 import PostDetail from "./_components/PostDetail";
 
 async function getAccessToken(): Promise<string | null> {
@@ -30,8 +32,15 @@ const PostPage = async ({
   const { id, subjectId, postId } = await params;
   const accessToken = await getAccessToken();
 
-  const [post, currentUser, favorites] = await Promise.all([
-    fetchPost(Number(subjectId), Number(postId)),
+  let post;
+  try {
+    post = await fetchPost(Number(subjectId), Number(postId));
+  } catch (e) {
+    if (axios.isAxiosError(e) && e.response?.status === 404) notFound();
+    throw e;
+  }
+
+  const [currentUser, favorites] = await Promise.all([
     accessToken ? getCurrentUser(accessToken) : Promise.resolve(null),
     accessToken ? fetchFavorites(accessToken).catch(() => []) : Promise.resolve([]),
   ]);

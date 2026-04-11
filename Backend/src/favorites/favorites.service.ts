@@ -7,7 +7,7 @@ export class FavoritesService {
 
   getFavorites(userId: number) {
     return this.prisma.favorite.findMany({
-      where: { userId },
+      where: { userId, post: { visible: true } },
       include: {
         post: {
           select: {

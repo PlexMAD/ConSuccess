@@ -2,7 +2,9 @@ import { axiosApi } from "@/shared/api/config";
 import { fetchFavorites } from "@/shared/api/favorites";
 import { fetchKnowledgePost } from "@/shared/api/posts";
 import { endpoints } from "@/shared/api/endpoints";
+import axios from "axios";
 import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
 import KnowledgePostDetail from "./_components/KnowledgePostDetail";
 
 async function getAccessToken(): Promise<string | null> {
@@ -30,8 +32,15 @@ const KnowledgePostPage = async ({
   const { postId } = await params;
   const accessToken = await getAccessToken();
 
-  const [post, currentUser, favorites] = await Promise.all([
-    fetchKnowledgePost(Number(postId)),
+  let post;
+  try {
+    post = await fetchKnowledgePost(Number(postId));
+  } catch (e) {
+    if (axios.isAxiosError(e) && e.response?.status === 404) notFound();
+    throw e;
+  }
+
+  const [currentUser, favorites] = await Promise.all([
     accessToken ? getCurrentUser(accessToken) : Promise.resolve(null),
     accessToken
       ? fetchFavorites(accessToken).catch(() => [])
