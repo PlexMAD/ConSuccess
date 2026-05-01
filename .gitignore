@@ -181,7 +181,7 @@ AutoTest.Net/
 
 # Claude Code
 .claude/
-CLAUDE.md
+AGENTS.md
 
 # Installshield output folder
 [Ee]xpress/
@@ -420,5 +420,3 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
-
-/typst
