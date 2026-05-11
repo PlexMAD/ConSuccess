@@ -16,7 +16,7 @@ const ModeratorPostsPage = async () => {
     <div className="flex flex-col gap-1 max-w-3xl">
       <Heading title="Все посты" />
       <p className="text-sm text-slate-500 -mt-3 mb-6">
-        Опубликовано: {posts.length}
+        Скрытые посты остаются в списке, чтобы их можно было вернуть.
       </p>
       <PostsList initialPosts={posts} />
     </div>

@@ -51,7 +51,6 @@ export class PostsService {
 
   getAllPostsForAdmin() {
     return this.prisma.post.findMany({
-      where: { visible: true },
       include: {
         attachments: true,
         user: { select: { id: true, username: true, avatar: true } },
@@ -64,7 +63,7 @@ export class PostsService {
           },
         },
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ visible: 'desc' }, { createdAt: 'desc' }],
     });
   }
 
@@ -158,6 +157,28 @@ export class PostsService {
     return this.prisma.post.update({
       where: { id },
       data: { visible: false },
+    });
+  }
+
+  async setPostVisibility(id: number, visible: boolean) {
+    const post = await this.prisma.post.findUnique({ where: { id } });
+    if (!post) throw new NotFoundException('Post not found');
+
+    return this.prisma.post.update({
+      where: { id },
+      data: { visible },
+      include: {
+        attachments: true,
+        user: { select: { id: true, username: true, avatar: true } },
+        subject: {
+          select: {
+            id: true,
+            universityId: true,
+            name: true,
+            university: { select: { name: true } },
+          },
+        },
+      },
     });
   }
 }
