@@ -10,16 +10,18 @@ const SuperuserLayout = async ({ children }: { children: React.ReactNode }) => {
 
   if (!accessToken) redirect("/login");
 
+  let data: { role: string };
+
   try {
-    const { data } = await axiosApi.get<{ role: string }>(
+    ({ data } = await axiosApi.get<{ role: string }>(
       `${endpoints.auth}/me`,
       { headers: { Authorization: `Bearer ${accessToken}` } },
-    );
-
-    if (data.role !== "ADMIN") redirect("/");
+    ));
   } catch {
     redirect("/login");
   }
+
+  if (data.role !== "ADMIN") redirect("/");
 
   return <>{children}</>;
 };

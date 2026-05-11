@@ -1,7 +1,7 @@
 import { axiosApi } from "@/shared/api/config";
 import { endpoints } from "@/shared/api/endpoints";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import React from "react";
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -10,16 +10,18 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
 
   if (!accessToken) redirect("/login");
 
+  let data: { role: string };
+
   try {
-    const { data } = await axiosApi.get<{ role: string }>(
+    ({ data } = await axiosApi.get<{ role: string }>(
       `${endpoints.auth}/me`,
       { headers: { Authorization: `Bearer ${accessToken}` } },
-    );
-
-    if (!["ADMIN", "MODERATOR"].includes(data.role)) redirect("/");
+    ));
   } catch {
     redirect("/login");
   }
+
+  if (!["ADMIN", "MODERATOR"].includes(data.role)) notFound();
 
   return <div className="h-full overflow-y-auto">{children}</div>;
 };
