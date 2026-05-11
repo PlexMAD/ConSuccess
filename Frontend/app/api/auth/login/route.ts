@@ -31,10 +31,23 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true });
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 401) {
+    if (
+      axios.isAxiosError(error) &&
+      (error.response?.status === 400 || error.response?.status === 401)
+    ) {
       return NextResponse.json(
-        { message: "Invalid credentials", ok: false },
+        { message: "Неверный логин или пароль", ok: false },
         { status: 401 },
+      );
+    }
+
+    if (axios.isAxiosError(error) && error.response) {
+      return NextResponse.json(
+        {
+          message: error.response.data?.message ?? "Internal server error",
+          ok: false,
+        },
+        { status: error.response.status },
       );
     }
 

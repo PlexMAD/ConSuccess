@@ -13,6 +13,7 @@ type MeResponse = {
 export const loginUser = async (data: UserCreds) => {
   const response = await axios.post<LoginResponse>("/api/auth/login", data, {
     withCredentials: true,
+    validateStatus: (status) => status < 500,
   });
 
   return response.data;

@@ -1,10 +1,12 @@
 "use client";
 
 import { checkMe, loginUser } from "@/shared/api/auth";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 type UserCreds = {
   username: string;
@@ -15,9 +17,13 @@ const LoginPage = () => {
   const router = useRouter();
 
   const fetchMe = useCallback(async () => {
-    const me = await checkMe();
-    if (me.user) {
-      router.push("/");
+    try {
+      const me = await checkMe();
+      if (me.user) {
+        router.push("/");
+      }
+    } catch {
+      // Unauthenticated visitors should remain on the login page.
     }
   }, [router]);
 
@@ -43,10 +49,16 @@ const LoginPage = () => {
         router.push("/");
         router.refresh();
       } else {
-        console.log(result.message);
+        toast.error(result.message);
       }
     } catch (error) {
-      console.error("Login error:", error);
+      const message =
+        axios.isAxiosError<{ message?: string }>(error) &&
+        error.response?.data?.message
+          ? error.response.data.message
+          : "Не удалось войти. Попробуйте ещё раз.";
+
+      toast.error(message);
     }
   };
 
