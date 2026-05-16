@@ -6,6 +6,8 @@ import { CitiesController } from './cities/cities.controller';
 import { CitiesService } from './cities/cities.service';
 import { FavoritesController } from './favorites/favorites.controller';
 import { FavoritesService } from './favorites/favorites.service';
+import { LikesController } from './likes/likes.controller';
+import { LikesService } from './likes/likes.service';
 import { PrismaModule } from './prisma.module';
 import { KnowledgePostsController } from './posts/knowledge-posts.controller';
 import { PostsController } from './posts/posts.controller';
@@ -26,7 +28,7 @@ import { UsersService } from './users/users.service';
       isGlobal: true,
     }),
   ],
-  controllers: [AdminController, UsersController, UniversitiesController, CitiesController, SubjectsController, PostsController, RecentPostsController, KnowledgePostsController, FavoritesController],
-  providers: [UsersService, UniversitiesService, CitiesService, SubjectsService, PostsService, FavoritesService],
+  controllers: [AdminController, UsersController, UniversitiesController, CitiesController, SubjectsController, PostsController, RecentPostsController, KnowledgePostsController, FavoritesController, LikesController],
+  providers: [UsersService, UniversitiesService, CitiesService, SubjectsService, PostsService, FavoritesService, LikesService],
 })
 export class AppModule {}

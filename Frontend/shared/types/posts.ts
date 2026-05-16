@@ -10,6 +10,10 @@ export type PostAuthor = {
     avatar: string | null;
 }
 
+export type PostCounts = {
+    likes: number;
+}
+
 export type RecentPost = Post & {
     subject: { id: number; universityId: number; name: string; university: { name: string } } | null;
     user: PostAuthor;
@@ -24,5 +28,6 @@ export type Post = {
     visible: boolean;
     createdAt: string;
     attachments: Attachment[];
+    _count?: PostCounts;
     user?: PostAuthor;
 }

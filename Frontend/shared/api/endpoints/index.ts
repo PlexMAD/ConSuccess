@@ -4,6 +4,7 @@ export const endpoints = {
     auth: "/auth",
     subjects: "/subjects",
     favorites: "/favorites",
+    likes: "/likes",
     posts: "/posts",
     knowledgePosts: "/knowledge-posts",
 }

@@ -1,5 +1,6 @@
 import { fetchPost } from "@/shared/api/posts";
 import { fetchFavorites } from "@/shared/api/favorites";
+import { fetchLikes } from "@/shared/api/likes";
 import { axiosApi } from "@/shared/api/config";
 import { endpoints } from "@/shared/api/endpoints";
 import axios from "axios";
@@ -40,20 +41,23 @@ const PostPage = async ({
     throw e;
   }
 
-  const [currentUser, favorites] = await Promise.all([
+  const [currentUser, favorites, likes] = await Promise.all([
     accessToken ? getCurrentUser(accessToken) : Promise.resolve(null),
     accessToken ? fetchFavorites(accessToken).catch(() => []) : Promise.resolve([]),
+    accessToken ? fetchLikes(accessToken).catch(() => []) : Promise.resolve([]),
   ]);
 
   const isOwner = currentUser !== null && post.userId === currentUser.id;
   const canModify = isOwner || ["ADMIN", "MODERATOR"].includes(currentUser?.role ?? "");
   const isFavorited = favorites.some((f: { postId: number }) => f.postId === Number(postId));
+  const isLiked = likes.some((like: { postId: number }) => like.postId === Number(postId));
 
   return (
     <PostDetail
       post={post}
       isOwner={canModify}
       isFavorited={isFavorited}
+      isLiked={isLiked}
       isLoggedIn={accessToken !== null}
       universityId={id}
       subjectId={subjectId}

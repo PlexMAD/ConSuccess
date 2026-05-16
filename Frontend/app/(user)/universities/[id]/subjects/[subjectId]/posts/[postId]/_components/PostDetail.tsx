@@ -9,11 +9,14 @@ import DeletePostButton from "./DeletePostButton";
 import EditPostForm from "./EditPostForm";
 import FavoriteButton from "@/app/_components/shared/FavoriteButton";
 import ImageGallery from "@/app/_components/shared/ImageGallery";
+import LikeButton from "@/app/_components/shared/LikeButton";
+import LikeCount from "@/app/_components/shared/LikeCount";
 
 const PostDetail = ({
   post,
   isOwner,
   isFavorited,
+  isLiked,
   isLoggedIn,
   universityId,
   subjectId,
@@ -21,12 +24,14 @@ const PostDetail = ({
   post: Post;
   isOwner: boolean;
   isFavorited: boolean;
+  isLiked: boolean;
   isLoggedIn: boolean;
   universityId: string;
   subjectId: string;
 }) => {
   const [editMode, setEditMode] = useState(false);
   const backHref = `/universities/${universityId}/subjects/${subjectId}`;
+  const likesCount = post._count?.likes ?? 0;
 
   if (editMode) {
     return (
@@ -57,6 +62,15 @@ const PostDetail = ({
           <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
             <h1 className="text-2xl font-bold wrap-break-word min-w-0 break-all">{post.title}</h1>
             <div className="flex items-center gap-3 shrink-0 sm:pt-1">
+              {isLoggedIn ? (
+                <LikeButton
+                  postId={post.id}
+                  initialIsLiked={isLiked}
+                  initialLikesCount={likesCount}
+                />
+              ) : (
+                <LikeCount count={likesCount} />
+              )}
               {isLoggedIn && (
                 <FavoriteButton postId={post.id} initialIsFavorited={isFavorited} />
               )}

@@ -14,6 +14,7 @@ export class PostsService {
       where: { visible: true },
       include: {
         attachments: true,
+        _count: { select: { likes: true } },
         user: { select: { id: true, username: true, avatar: true } },
         subject: {
           select: {
@@ -32,7 +33,7 @@ export class PostsService {
   getPostsBySubject(subjectId: number) {
     return this.prisma.post.findMany({
       where: { subjectId, visible: true },
-      include: { attachments: true },
+      include: { attachments: true, _count: { select: { likes: true } } },
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -42,6 +43,7 @@ export class PostsService {
       where: { id, visible: true },
       include: {
         attachments: true,
+        _count: { select: { likes: true } },
         user: { select: { id: true, username: true, avatar: true } },
       },
     });
@@ -53,6 +55,7 @@ export class PostsService {
     return this.prisma.post.findMany({
       include: {
         attachments: true,
+        _count: { select: { likes: true } },
         user: { select: { id: true, username: true, avatar: true } },
         subject: {
           select: {
@@ -72,6 +75,7 @@ export class PostsService {
       where: { subjectId: null, visible: true },
       include: {
         attachments: true,
+        _count: { select: { likes: true } },
         user: { select: { id: true, username: true, avatar: true } },
       },
       orderBy: { createdAt: 'desc' },
@@ -96,7 +100,7 @@ export class PostsService {
           create: attachmentUrls.map((url) => ({ url })),
         },
       },
-      include: { attachments: true },
+      include: { attachments: true, _count: { select: { likes: true } } },
     });
   }
 
@@ -115,7 +119,7 @@ export class PostsService {
           create: attachmentUrls.map((url) => ({ url })),
         },
       },
-      include: { attachments: true },
+      include: { attachments: true, _count: { select: { likes: true } } },
     });
   }
 
@@ -145,7 +149,7 @@ export class PostsService {
           create: newAttachmentUrls.map((url) => ({ url })),
         },
       },
-      include: { attachments: true },
+      include: { attachments: true, _count: { select: { likes: true } } },
     });
   }
 
@@ -169,6 +173,7 @@ export class PostsService {
       data: { visible },
       include: {
         attachments: true,
+        _count: { select: { likes: true } },
         user: { select: { id: true, username: true, avatar: true } },
         subject: {
           select: {

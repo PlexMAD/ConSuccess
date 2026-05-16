@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useState } from "react";
 import FavoriteButton from "@/app/_components/shared/FavoriteButton";
 import ImageGallery from "@/app/_components/shared/ImageGallery";
+import LikeButton from "@/app/_components/shared/LikeButton";
+import LikeCount from "@/app/_components/shared/LikeCount";
 import KnowledgeDeletePostButton from "./KnowledgeDeletePostButton";
 import KnowledgeEditPostForm from "./KnowledgeEditPostForm";
 
@@ -14,14 +16,17 @@ const KnowledgePostDetail = ({
   post,
   isOwner,
   isFavorited,
+  isLiked,
   isLoggedIn,
 }: {
   post: Post;
   isOwner: boolean;
   isFavorited: boolean;
+  isLiked: boolean;
   isLoggedIn: boolean;
 }) => {
   const [editMode, setEditMode] = useState(false);
+  const likesCount = post._count?.likes ?? 0;
 
   if (editMode) {
     return (
@@ -53,6 +58,15 @@ const KnowledgePostDetail = ({
               {post.title}
             </h1>
             <div className="flex items-center gap-3 shrink-0 sm:pt-1">
+              {isLoggedIn ? (
+                <LikeButton
+                  postId={post.id}
+                  initialIsLiked={isLiked}
+                  initialLikesCount={likesCount}
+                />
+              ) : (
+                <LikeCount count={likesCount} />
+              )}
               {isLoggedIn && (
                 <FavoriteButton postId={post.id} initialIsFavorited={isFavorited} />
               )}

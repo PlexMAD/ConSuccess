@@ -3,6 +3,7 @@ import { Post } from "@/shared/types/posts";
 import { getPreviewAttachment } from "@/shared/lib/attachments";
 import Link from "next/link";
 import AttachmentTile from "./AttachmentTile";
+import LikeCount from "./LikeCount";
 
 const PostCard = ({
   post,
@@ -18,6 +19,7 @@ const PostCard = ({
   subjectName?: string;
 }) => {
   const previewAttachment = getPreviewAttachment(post.attachments);
+  const likesCount = post._count?.likes ?? 0;
 
   return (
     <li className="list-none">
@@ -46,9 +48,12 @@ const PostCard = ({
             {post.title}
           </h3>
           <p className="line-clamp-2 text-sm text-neutral-500">{post.body}</p>
-          <p className="text-xs text-neutral-400">
-            {new Date(post.createdAt).toLocaleDateString("ru-RU")}
-          </p>
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-xs text-neutral-400">
+              {new Date(post.createdAt).toLocaleDateString("ru-RU")}
+            </p>
+            <LikeCount count={likesCount} />
+          </div>
           <Link
             className="mt-auto text-sm font-medium text-primary"
             href={`/universities/${universityId}/subjects/${subjectId}/posts/${post.id}`}
