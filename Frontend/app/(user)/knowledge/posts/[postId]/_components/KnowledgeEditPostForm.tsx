@@ -2,8 +2,12 @@
 
 import { apiURL } from "@/shared/api/config";
 import { Attachment } from "@/shared/types/posts";
+import AttachmentTile from "@/app/_components/shared/AttachmentTile";
+import {
+  MAX_POST_ATTACHMENTS,
+  POST_ATTACHMENT_ACCEPT,
+} from "@/shared/lib/attachments";
 import axios from "axios";
-import Image from "next/image";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -45,7 +49,8 @@ const KnowledgeEditPostForm = ({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? []);
-    const remaining = 5 - keepAttachmentIds.length - newImages.length;
+    const remaining =
+      MAX_POST_ATTACHMENTS - keepAttachmentIds.length - newImages.length;
     setNewImages((prev) => [...prev, ...files].slice(0, prev.length + remaining));
     e.target.value = "";
   };
@@ -136,20 +141,21 @@ const KnowledgeEditPostForm = ({
 
       <div className="flex flex-col gap-2">
         <label className="text-sm font-medium">
-          Изображения{" "}
-          <span className="text-neutral-400 font-normal">({totalImages}/5)</span>
+          Файлы{" "}
+          <span className="text-neutral-400 font-normal">
+            ({totalImages}/{MAX_POST_ATTACHMENTS})
+          </span>
         </label>
 
         {(keptAttachments.length > 0 || newImages.length > 0) && (
           <div className="flex flex-wrap gap-2">
             {keptAttachments.map((att) => (
               <div key={att.id} className="relative w-20 h-20">
-                <Image
+                <AttachmentTile
                   src={`${apiURL}${att.url}`}
-                  alt="изображение"
-                  fill
-                  unoptimized
-                  className="object-cover rounded-lg"
+                  url={att.url}
+                  alt="вложение"
+                  imageClassName="object-cover rounded-lg"
                 />
                 <button
                   type="button"
@@ -162,12 +168,12 @@ const KnowledgeEditPostForm = ({
             ))}
             {newImages.map((img, i) => (
               <div key={`new-${i}`} className="relative w-20 h-20">
-                <Image
+                <AttachmentTile
                   src={URL.createObjectURL(img)}
+                  name={img.name}
+                  mimeType={img.type}
                   alt={img.name}
-                  fill
-                  unoptimized
-                  className="object-cover rounded-lg"
+                  imageClassName="object-cover rounded-lg"
                 />
                 <button
                   type="button"
@@ -181,12 +187,12 @@ const KnowledgeEditPostForm = ({
           </div>
         )}
 
-        {totalImages < 5 && (
+        {totalImages < MAX_POST_ATTACHMENTS && (
           <>
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*"
+              accept={POST_ATTACHMENT_ACCEPT}
               multiple
               onChange={handleFileChange}
               className="hidden"
@@ -196,7 +202,7 @@ const KnowledgeEditPostForm = ({
               onClick={() => fileInputRef.current?.click()}
               className="self-start px-3 py-2 rounded-lg border border-dashed border-gray-300 text-sm text-neutral-500 hover:border-primary hover:text-primary transition"
             >
-              + Добавить изображения
+              + Добавить файлы
             </button>
           </>
         )}

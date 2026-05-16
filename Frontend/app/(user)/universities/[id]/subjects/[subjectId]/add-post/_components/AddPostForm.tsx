@@ -1,7 +1,11 @@
 "use client";
 
 import axios from "axios";
-import Image from "next/image";
+import AttachmentTile from "@/app/_components/shared/AttachmentTile";
+import {
+  MAX_POST_ATTACHMENTS,
+  POST_ATTACHMENT_ACCEPT,
+} from "@/shared/lib/attachments";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -35,7 +39,7 @@ const AddPostForm = ({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? []);
-    setImages((prev) => [...prev, ...files].slice(0, 5));
+    setImages((prev) => [...prev, ...files].slice(0, MAX_POST_ATTACHMENTS));
     e.target.value = "";
   };
 
@@ -117,9 +121,9 @@ const AddPostForm = ({
 
       <div className="flex flex-col gap-2">
         <label className="text-sm font-medium">
-          Изображения{" "}
+          Файлы{" "}
           <span className="text-neutral-400 font-normal">
-            ({images.length}/5)
+            ({images.length}/{MAX_POST_ATTACHMENTS})
           </span>
         </label>
 
@@ -127,12 +131,12 @@ const AddPostForm = ({
           <div className="flex flex-wrap gap-2">
             {images.map((img, i) => (
               <div key={i} className="relative w-20 h-20">
-                <Image
+                <AttachmentTile
                   src={URL.createObjectURL(img)}
+                  name={img.name}
+                  mimeType={img.type}
                   alt={img.name}
-                  fill
-                  unoptimized
-                  className="object-cover rounded-lg"
+                  imageClassName="object-cover rounded-lg"
                 />
                 <button
                   type="button"
@@ -146,12 +150,12 @@ const AddPostForm = ({
           </div>
         )}
 
-        {images.length < 5 && (
+        {images.length < MAX_POST_ATTACHMENTS && (
           <>
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*"
+              accept={POST_ATTACHMENT_ACCEPT}
               multiple
               onChange={handleFileChange}
               className="hidden"
@@ -161,7 +165,7 @@ const AddPostForm = ({
               onClick={() => fileInputRef.current?.click()}
               className="self-start px-3 py-2 rounded-lg border border-dashed border-gray-300 text-sm text-neutral-500 hover:border-primary hover:text-primary transition"
             >
-              + Добавить изображения
+              + Добавить файлы
             </button>
           </>
         )}

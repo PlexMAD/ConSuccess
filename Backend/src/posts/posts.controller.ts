@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { imageUploadOptions } from 'src/utils/multer';
+import { postAttachmentUploadOptions } from 'src/utils/multer';
 import { PostsService } from './posts.service';
 
 @Controller('subjects/:subjectId/posts')
@@ -33,26 +33,26 @@ export class PostsController {
 
   @Post()
   @UseGuards(AuthGuard)
-  @UseInterceptors(FilesInterceptor('images', 5, imageUploadOptions))
+  @UseInterceptors(FilesInterceptor('images', 5, postAttachmentUploadOptions))
   create(
     @Param('subjectId', ParseIntPipe) subjectId: number,
     @Body() body: { title: string; body: string },
     @UploadedFiles() files: Express.Multer.File[],
     @Req() req: { user: { id: number } },
   ) {
-    const imageUrls = (files ?? []).map((f) => `/uploads/${f.filename}`);
+    const attachmentUrls = (files ?? []).map((f) => `/uploads/${f.filename}`);
     return this.postsService.createPost(
       subjectId,
       req.user.id,
       body.title,
       body.body,
-      imageUrls,
+      attachmentUrls,
     );
   }
 
   @Patch(':id')
   @UseGuards(AuthGuard)
-  @UseInterceptors(FilesInterceptor('images', 5, imageUploadOptions))
+  @UseInterceptors(FilesInterceptor('images', 5, postAttachmentUploadOptions))
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body()
@@ -64,7 +64,7 @@ export class PostsController {
     @UploadedFiles() files: Express.Multer.File[],
     @Req() req: { user: { id: number; role: string } },
   ) {
-    const newImageUrls = (files ?? []).map((f) => `/uploads/${f.filename}`);
+    const newAttachmentUrls = (files ?? []).map((f) => `/uploads/${f.filename}`);
     const raw = body.keepAttachmentIds;
     const keepIds = Array.isArray(raw)
       ? raw.map(Number)
@@ -78,7 +78,7 @@ export class PostsController {
       body.title,
       body.body,
       keepIds,
-      newImageUrls,
+      newAttachmentUrls,
     );
   }
 

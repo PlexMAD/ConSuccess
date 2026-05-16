@@ -1,7 +1,8 @@
 import { apiURL } from "@/shared/api/config";
 import { Post } from "@/shared/types/posts";
-import Image from "next/image";
+import { getPreviewAttachment } from "@/shared/lib/attachments";
 import Link from "next/link";
+import AttachmentTile from "./AttachmentTile";
 
 const PostCard = ({
   post,
@@ -16,23 +17,21 @@ const PostCard = ({
   universityName?: string;
   subjectName?: string;
 }) => {
-  const firstImage = post.attachments?.[0];
+  const previewAttachment = getPreviewAttachment(post.attachments);
 
   return (
     <li className="list-none">
       <div className="flex h-full w-full flex-col rounded-2xl bg-white shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg overflow-hidden">
-        {firstImage && (
+        {previewAttachment && (
           <div className="relative w-full h-36 bg-neutral-50">
-            <Image
-              src={`${apiURL}${firstImage.url}`}
+            <AttachmentTile
+              src={`${apiURL}${previewAttachment.url}`}
+              url={previewAttachment.url}
               alt={post.title}
-              fill
-              unoptimized
-              className="object-contain"
             />
             {post.attachments.length > 1 && (
               <span className="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-1.5 py-0.5 rounded">
-                +{post.attachments.length - 1} изображений
+                +{post.attachments.length - 1} файлов
               </span>
             )}
           </div>

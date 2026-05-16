@@ -61,12 +61,12 @@ describe("PostCard", () => {
     expect(link).toHaveAttribute("href", "/universities/1/subjects/2/posts/1");
   });
 
-  it("shows image count badge when multiple attachments", () => {
+  it("shows attachment count badge when multiple attachments", () => {
     render(<PostCard post={mockPost} universityId={1} subjectId={2} />);
-    expect(screen.getByText("+1 изображений")).toBeInTheDocument();
+    expect(screen.getByText("+1 файлов")).toBeInTheDocument();
   });
 
-  it("does not show image count badge when single attachment", () => {
+  it("does not show attachment count badge when single attachment", () => {
     const singleAttachmentPost = {
       ...mockPost,
       attachments: [mockPost.attachments[0]],
@@ -74,7 +74,7 @@ describe("PostCard", () => {
     render(
       <PostCard post={singleAttachmentPost} universityId={1} subjectId={2} />,
     );
-    expect(screen.queryByText(/изображений/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/файлов/)).not.toBeInTheDocument();
   });
 
   it("does not render image section when no attachments", () => {
@@ -82,5 +82,23 @@ describe("PostCard", () => {
     render(<PostCard post={noAttachmentPost} universityId={1} subjectId={2} />);
     const images = screen.queryAllByRole("img");
     expect(images).toHaveLength(0);
+  });
+
+  it("uses the first image as preview when a document comes first", () => {
+    const mixedAttachmentPost = {
+      ...mockPost,
+      attachments: [
+        { id: 1, url: "/uploads/file.pdf", postId: 1 },
+        { id: 2, url: "/uploads/test2.jpg", postId: 1 },
+      ],
+    };
+
+    render(
+      <PostCard post={mixedAttachmentPost} universityId={1} subjectId={2} />,
+    );
+
+    expect(screen.getByRole("img").getAttribute("src")).toContain(
+      "/uploads/test2.jpg",
+    );
   });
 });

@@ -84,7 +84,7 @@ export class PostsService {
     userId: number,
     title: string,
     body: string,
-    imageUrls: string[],
+    attachmentUrls: string[],
   ) {
     return this.prisma.post.create({
       data: {
@@ -93,7 +93,7 @@ export class PostsService {
         subjectId,
         userId,
         attachments: {
-          create: imageUrls.map((url) => ({ url })),
+          create: attachmentUrls.map((url) => ({ url })),
         },
       },
       include: { attachments: true },
@@ -104,7 +104,7 @@ export class PostsService {
     userId: number,
     title: string,
     body: string,
-    imageUrls: string[],
+    attachmentUrls: string[],
   ) {
     return this.prisma.post.create({
       data: {
@@ -112,7 +112,7 @@ export class PostsService {
         body,
         userId,
         attachments: {
-          create: imageUrls.map((url) => ({ url })),
+          create: attachmentUrls.map((url) => ({ url })),
         },
       },
       include: { attachments: true },
@@ -126,7 +126,7 @@ export class PostsService {
     title: string,
     body: string,
     keepAttachmentIds: number[],
-    newImageUrls: string[],
+    newAttachmentUrls: string[],
   ) {
     const post = await this.prisma.post.findUnique({ where: { id } });
     if (!post || !post.visible) throw new NotFoundException('Post not found');
@@ -142,7 +142,7 @@ export class PostsService {
         title,
         body,
         attachments: {
-          create: newImageUrls.map((url) => ({ url })),
+          create: newAttachmentUrls.map((url) => ({ url })),
         },
       },
       include: { attachments: true },
