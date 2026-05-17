@@ -10,7 +10,7 @@ export default async function Home() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
         <Heading title="Главная" />
-        <p className="text-sm text-neutral-500">Последние добавленные материалы</p>
+        <p className="text-sm text-neutral-500">Самые залайканные материалы</p>
       </div>
 
       {posts.length === 0 ? (

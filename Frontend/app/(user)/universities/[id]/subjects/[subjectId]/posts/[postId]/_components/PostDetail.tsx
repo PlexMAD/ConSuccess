@@ -41,6 +41,7 @@ const PostDetail = ({
           subjectId={subjectId}
           initialTitle={post.title}
           initialBody={post.body}
+          initialIsPrivate={post.isPrivate}
           attachments={post.attachments}
           onCancel={() => setEditMode(false)}
         />
@@ -62,6 +63,11 @@ const PostDetail = ({
           <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
             <h1 className="text-2xl font-bold wrap-break-word min-w-0 break-all">{post.title}</h1>
             <div className="flex items-center gap-3 shrink-0 sm:pt-1">
+              {post.isPrivate && (
+                <span className="rounded-md bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700">
+                  Личный
+                </span>
+              )}
               {isLoggedIn ? (
                 <LikeButton
                   postId={post.id}

@@ -5,13 +5,20 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 
+type Viewer = {
+  id: number;
+  role: string;
+};
+
+const PRIVILEGED_ROLES = ['ADMIN', 'MODERATOR'];
+
 @Injectable()
 export class PostsService {
   constructor(private readonly prisma: PrismaService) {}
 
   getRecentPosts(limit = 20) {
     return this.prisma.post.findMany({
-      where: { visible: true },
+      where: { visible: true, isPrivate: false },
       include: {
         attachments: true,
         _count: { select: { likes: true } },
@@ -25,20 +32,37 @@ export class PostsService {
           },
         },
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ likes: { _count: 'desc' } }, { createdAt: 'desc' }],
       take: limit,
     });
   }
 
   getPostsBySubject(subjectId: number) {
     return this.prisma.post.findMany({
-      where: { subjectId, visible: true },
+      where: {
+        subjectId,
+        visible: true,
+        isPrivate: false,
+      },
       include: { attachments: true, _count: { select: { likes: true } } },
       orderBy: { createdAt: 'desc' },
     });
   }
 
-  async getPostById(id: number) {
+  getPrivatePostsBySubject(subjectId: number, userId: number) {
+    return this.prisma.post.findMany({
+      where: {
+        subjectId,
+        userId,
+        visible: true,
+        isPrivate: true,
+      },
+      include: { attachments: true, _count: { select: { likes: true } } },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async getPostById(id: number, viewer?: Viewer | null) {
     const post = await this.prisma.post.findFirst({
       where: { id, visible: true },
       include: {
@@ -48,6 +72,13 @@ export class PostsService {
       },
     });
     if (!post) throw new NotFoundException('Post not found');
+    if (
+      post.isPrivate &&
+      post.userId !== viewer?.id &&
+      !PRIVILEGED_ROLES.includes(viewer?.role ?? '')
+    ) {
+      throw new NotFoundException('Post not found');
+    }
     return post;
   }
 
@@ -72,7 +103,7 @@ export class PostsService {
 
   getKnowledgePosts(limit = 20) {
     return this.prisma.post.findMany({
-      where: { subjectId: null, visible: true },
+      where: { subjectId: null, visible: true, isPrivate: false },
       include: {
         attachments: true,
         _count: { select: { likes: true } },
@@ -89,11 +120,13 @@ export class PostsService {
     title: string,
     body: string,
     attachmentUrls: string[],
+    isPrivate = false,
   ) {
     return this.prisma.post.create({
       data: {
         title,
         body,
+        isPrivate,
         subjectId,
         userId,
         attachments: {
@@ -109,11 +142,13 @@ export class PostsService {
     title: string,
     body: string,
     attachmentUrls: string[],
+    isPrivate = false,
   ) {
     return this.prisma.post.create({
       data: {
         title,
         body,
+        isPrivate,
         userId,
         attachments: {
           create: attachmentUrls.map((url) => ({ url })),
@@ -131,6 +166,7 @@ export class PostsService {
     body: string,
     keepAttachmentIds: number[],
     newAttachmentUrls: string[],
+    isPrivate?: boolean,
   ) {
     const post = await this.prisma.post.findUnique({ where: { id } });
     if (!post || !post.visible) throw new NotFoundException('Post not found');
@@ -145,6 +181,7 @@ export class PostsService {
       data: {
         title,
         body,
+        ...(typeof isPrivate === 'boolean' ? { isPrivate } : {}),
         attachments: {
           create: newAttachmentUrls.map((url) => ({ url })),
         },

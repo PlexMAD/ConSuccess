@@ -10,6 +10,7 @@ const mockPost: Post = {
   subjectId: 2,
   userId: 3,
   visible: true,
+  isPrivate: false,
   createdAt: "2024-01-15T10:30:00Z",
   attachments: [
     { id: 1, url: "/uploads/test1.jpg", postId: 1 },

@@ -47,6 +47,11 @@ const PostCard = ({
           <h3 className="line-clamp-2 text-base font-semibold leading-5 text-slate-900">
             {post.title}
           </h3>
+          {post.isPrivate && (
+            <span className="self-start rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">
+              Личный
+            </span>
+          )}
           <p className="line-clamp-2 text-sm text-neutral-500">{post.body}</p>
           <div className="flex items-center justify-between gap-2">
             <p className="text-xs text-neutral-400">

@@ -7,14 +7,24 @@ export class LikesService {
 
   getLikes(userId: number) {
     return this.prisma.like.findMany({
-      where: { userId, post: { visible: true } },
+      where: {
+        userId,
+        post: {
+          visible: true,
+          OR: [{ isPrivate: false }, { userId }],
+        },
+      },
       orderBy: { createdAt: 'desc' },
     });
   }
 
   async addLike(userId: number, postId: number) {
     const post = await this.prisma.post.findFirst({
-      where: { id: postId, visible: true },
+      where: {
+        id: postId,
+        visible: true,
+        OR: [{ isPrivate: false }, { userId }],
+      },
       select: { id: true },
     });
     if (!post) throw new NotFoundException('Post not found');

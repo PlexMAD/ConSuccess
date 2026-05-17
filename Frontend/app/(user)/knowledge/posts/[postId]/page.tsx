@@ -35,7 +35,7 @@ const KnowledgePostPage = async ({
 
   let post;
   try {
-    post = await fetchKnowledgePost(Number(postId));
+    post = await fetchKnowledgePost(Number(postId), accessToken);
   } catch (e) {
     if (axios.isAxiosError(e) && e.response?.status === 404) notFound();
     throw e;

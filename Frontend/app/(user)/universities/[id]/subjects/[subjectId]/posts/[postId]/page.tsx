@@ -35,7 +35,7 @@ const PostPage = async ({
 
   let post;
   try {
-    post = await fetchPost(Number(subjectId), Number(postId));
+    post = await fetchPost(Number(subjectId), Number(postId), accessToken);
   } catch (e) {
     if (axios.isAxiosError(e) && e.response?.status === 404) notFound();
     throw e;

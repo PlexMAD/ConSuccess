@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 type FormValues = {
   title: string;
   body: string;
+  isPrivate: boolean;
 };
 
 const AddPostForm = ({
@@ -52,6 +53,7 @@ const AddPostForm = ({
       const formData = new FormData();
       formData.append("title", values.title);
       formData.append("body", values.body);
+      formData.append("isPrivate", String(values.isPrivate));
       images.forEach((img) => formData.append("images", img));
 
       await axios.post(`/api/subjects/${subjectId}/posts`, formData, {
@@ -170,6 +172,20 @@ const AddPostForm = ({
           </>
         )}
       </div>
+
+      <label className="flex items-start gap-2 rounded-lg border border-neutral-200 bg-white p-3 text-sm text-neutral-600">
+        <input
+          type="checkbox"
+          {...register("isPrivate")}
+          className="mt-0.5 h-4 w-4 rounded border-neutral-300 accent-primary"
+        />
+        <span className="flex flex-col gap-0.5">
+          <span className="font-medium text-neutral-800">Личный пост</span>
+          <span className="text-xs text-neutral-500">
+            Его увидите только вы.
+          </span>
+        </span>
+      </label>
 
       <button
         type="submit"

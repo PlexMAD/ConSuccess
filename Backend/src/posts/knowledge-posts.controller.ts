@@ -13,14 +13,23 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { postAttachmentUploadOptions } from 'src/utils/multer';
 import { PostsService } from './posts.service';
 
+type Viewer = {
+  id: number;
+  role: string;
+};
+
 @Controller('knowledge-posts')
 export class KnowledgePostsController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(
+    private readonly postsService: PostsService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Get()
   getAll(@Query('limit') limit?: string) {
@@ -28,8 +37,12 @@ export class KnowledgePostsController {
   }
 
   @Get(':id')
-  getOne(@Param('id', ParseIntPipe) id: number) {
-    return this.postsService.getPostById(id);
+  async getOne(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: { headers: { authorization?: string } },
+  ) {
+    const viewer = await this.getOptionalViewer(req);
+    return this.postsService.getPostById(id, viewer);
   }
 
   @Post()
@@ -88,5 +101,19 @@ export class KnowledgePostsController {
     @Req() req: { user: { id: number; role: string } },
   ) {
     return this.postsService.deletePost(id, req.user.id, req.user.role);
+  }
+
+  private async getOptionalViewer(req: {
+    headers: { authorization?: string };
+  }): Promise<Viewer | null> {
+    const [type, token] = req.headers.authorization?.split(' ') ?? [];
+    if (type !== 'Bearer' || !token) return null;
+
+    try {
+      const payload = await this.jwtService.verifyAsync<Viewer>(token);
+      return { id: payload.id, role: payload.role };
+    } catch {
+      return null;
+    }
   }
 }

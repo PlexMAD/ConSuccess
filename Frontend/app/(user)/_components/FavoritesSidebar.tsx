@@ -9,13 +9,26 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Star } from "../../_icons";
 
-const FavoritesSidebar = ({ initialFavorites }: { initialFavorites: FavoritePost[] }) => {
+const emptyFavorites: FavoritePost[] = [];
+
+const FavoritesSidebar = ({
+  initialFavorites = emptyFavorites,
+}: {
+  initialFavorites?: FavoritePost[];
+}) => {
   const router = useRouter();
   const [favorites, setFavorites] = useState(initialFavorites);
 
   useEffect(() => {
     setFavorites(initialFavorites);
   }, [initialFavorites]);
+
+  useEffect(() => {
+    axios
+      .get<FavoritePost[]>("/api/favorites")
+      .then(({ data }) => setFavorites(data))
+      .catch(() => setFavorites([]));
+  }, []);
 
   const remove = async (postId: number) => {
     setFavorites((prev) => prev.filter((f) => f.postId !== postId));

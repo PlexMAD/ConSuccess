@@ -26,6 +26,7 @@ export type Post = {
     subjectId: number;
     userId: number;
     visible: boolean;
+    isPrivate: boolean;
     createdAt: string;
     attachments: Attachment[];
     _count?: PostCounts;

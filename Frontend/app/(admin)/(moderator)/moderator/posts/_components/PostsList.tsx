@@ -43,11 +43,12 @@ export function PostsList({ initialPosts }: { initialPosts: RecentPost[] }) {
   const confirmPost = posts.find((post) => post.id === confirmId);
   const visibleCount = posts.filter((post) => post.visible).length;
   const hiddenCount = posts.length - visibleCount;
+  const privateCount = posts.filter((post) => post.isPrivate).length;
 
   return (
     <>
       <p className="mb-3 text-xs text-slate-400">
-        Всего: {posts.length} · Видимых: {visibleCount} · Скрытых: {hiddenCount}
+        Всего: {posts.length} · Видимых: {visibleCount} · Скрытых: {hiddenCount} · Личных: {privateCount}
       </p>
       <div className="flex flex-col gap-3">
         {posts.map((post) => (
@@ -100,6 +101,11 @@ export function PostsList({ initialPosts }: { initialPosts: RecentPost[] }) {
                 >
                   {post.visible ? "Виден" : "Скрыт"}
                 </span>
+                {post.isPrivate && (
+                  <span className="rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">
+                    Личный пост пользователя {post.user.username}
+                  </span>
+                )}
               </div>
               <p className="font-semibold text-slate-900 text-sm truncate">{post.title}</p>
               <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{post.body}</p>

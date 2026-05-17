@@ -59,6 +59,7 @@ model Post {
   title       String
   body        String
   visible     Boolean      @default(true)
+  isPrivate   Boolean      @default(false) @map("is_private")
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime     @updatedAt @map("updated_at")
   attachments Attachment[]

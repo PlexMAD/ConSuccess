@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -7,7 +7,13 @@ export class FavoritesService {
 
   getFavorites(userId: number) {
     return this.prisma.favorite.findMany({
-      where: { userId, post: { visible: true } },
+      where: {
+        userId,
+        post: {
+          visible: true,
+          OR: [{ isPrivate: false }, { userId }],
+        },
+      },
       include: {
         post: {
           select: {
@@ -22,7 +28,17 @@ export class FavoritesService {
     });
   }
 
-  addFavorite(userId: number, postId: number) {
+  async addFavorite(userId: number, postId: number) {
+    const post = await this.prisma.post.findFirst({
+      where: {
+        id: postId,
+        visible: true,
+        OR: [{ isPrivate: false }, { userId }],
+      },
+      select: { id: true },
+    });
+    if (!post) throw new NotFoundException('Post not found');
+
     return this.prisma.favorite.create({ data: { userId, postId } });
   }
 

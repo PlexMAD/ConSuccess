@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 type FormValues = {
   title: string;
   body: string;
+  isPrivate: boolean;
 };
 
 const EditPostForm = ({
@@ -23,6 +24,7 @@ const EditPostForm = ({
   subjectId,
   initialTitle,
   initialBody,
+  initialIsPrivate,
   attachments,
   onCancel,
 }: {
@@ -30,6 +32,7 @@ const EditPostForm = ({
   subjectId: string;
   initialTitle: string;
   initialBody: string;
+  initialIsPrivate: boolean;
   attachments: Attachment[];
   onCancel: () => void;
 }) => {
@@ -46,7 +49,11 @@ const EditPostForm = ({
     setError,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
-    defaultValues: { title: initialTitle, body: initialBody },
+    defaultValues: {
+      title: initialTitle,
+      body: initialBody,
+      isPrivate: initialIsPrivate,
+    },
   });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +77,7 @@ const EditPostForm = ({
       const formData = new FormData();
       formData.append("title", values.title);
       formData.append("body", values.body);
+      formData.append("isPrivate", String(values.isPrivate));
       keepAttachmentIds.forEach((id) =>
         formData.append("keepAttachmentIds", String(id)),
       );
@@ -205,6 +213,20 @@ const EditPostForm = ({
           </>
         )}
       </div>
+
+      <label className="flex items-start gap-2 rounded-lg border border-neutral-200 bg-white p-3 text-sm text-neutral-600">
+        <input
+          type="checkbox"
+          {...register("isPrivate")}
+          className="mt-0.5 h-4 w-4 rounded border-neutral-300 accent-primary"
+        />
+        <span className="flex flex-col gap-0.5">
+          <span className="font-medium text-neutral-800">Личный пост</span>
+          <span className="text-xs text-neutral-500">
+            Его увидите только вы.
+          </span>
+        </span>
+      </label>
 
       <div className="flex gap-2">
         <button

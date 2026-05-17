@@ -3,6 +3,7 @@ import { fetchSubjectsByUniversity, fetchSubject } from "@/shared/api/subjects";
 import { fetchUniversities, fetchUniversity } from "@/shared/api/universities";
 import Link from "next/link";
 import AddPostButton from "./_components/AddPostButton";
+import PrivatePostsButton from "./_components/PrivatePostsButton";
 import PostCard from "@/app/_components/shared/PostCard";
 
 export async function generateStaticParams() {
@@ -47,7 +48,10 @@ const SubjectPage = async ({
           {university.name} — {subject.name}
         </h1>
         <p className="text-sm text-neutral-500"></p>
-        <AddPostButton universityId={id} subjectId={subjectId} />
+        <div className="flex flex-wrap gap-2">
+          <AddPostButton universityId={id} subjectId={subjectId} />
+          <PrivatePostsButton universityId={id} subjectId={subjectId} />
+        </div>
       </div>
 
       {posts.length === 0 ? (
