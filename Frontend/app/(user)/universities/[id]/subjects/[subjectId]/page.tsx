@@ -1,24 +1,12 @@
 import { fetchPostsBySubject } from "@/shared/api/posts";
-import { fetchSubjectsByUniversity, fetchSubject } from "@/shared/api/subjects";
-import { fetchUniversities, fetchUniversity } from "@/shared/api/universities";
+import { fetchSubject } from "@/shared/api/subjects";
+import { fetchUniversity } from "@/shared/api/universities";
 import Link from "next/link";
 import AddPostButton from "./_components/AddPostButton";
 import PrivatePostsButton from "./_components/PrivatePostsButton";
 import PostCard from "@/app/_components/shared/PostCard";
 
-export async function generateStaticParams() {
-  const universities = await fetchUniversities();
-  const params = await Promise.all(
-    universities.map(async (university) => {
-      const subjects = await fetchSubjectsByUniversity(university.id);
-      return subjects.map((subject) => ({
-        id: String(university.id),
-        subjectId: String(subject.id),
-      }));
-    }),
-  );
-  return params.flat();
-}
+export const dynamic = "force-dynamic";
 
 const SubjectPage = async ({
   params,

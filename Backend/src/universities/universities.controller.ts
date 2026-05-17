@@ -1,4 +1,18 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { imageUploadOptions } from 'src/utils/multer';
@@ -27,5 +41,26 @@ export class UniversitiesController {
   ) {
     const avatar = file ? `/uploads/${file.filename}` : undefined;
     return this.universityService.createUniversity(body.name, Number(body.cityId), avatar);
+  }
+
+  @Patch(':id/avatar')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(FileInterceptor('avatar', imageUploadOptions))
+  updateAvatar(
+    @Param('id', ParseIntPipe) id: number,
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: { user: { role: string } },
+  ) {
+    if (!['ADMIN', 'MODERATOR'].includes(req.user.role)) {
+      throw new ForbiddenException('Moderator access required');
+    }
+
+    if (!file) {
+      throw new BadRequestException('No image file provided');
+    }
+
+    return this.universityService.updateUniversity(id, {
+      avatar: `/uploads/${file.filename}`,
+    });
   }
 }

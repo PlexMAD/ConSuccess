@@ -22,6 +22,10 @@ export class UniversitiesService {
   }
 
   updateUniversity(id: number, data: Prisma.UniversityUpdateInput) {
-    return this.prisma.university.update({ where: { id }, data });
+    return this.prisma.university.update({
+      where: { id },
+      data,
+      include: { city: true },
+    });
   }
 }

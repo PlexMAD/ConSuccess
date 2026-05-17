@@ -1,16 +1,10 @@
 import { fetchSubjectsByUniversity } from "@/shared/api/subjects";
-import { fetchUniversities, fetchUniversity } from "@/shared/api/universities";
+import { fetchUniversity } from "@/shared/api/universities";
 import Link from "next/link";
 import AddSubjectButton from "./_components/AddSubjectButton";
 import SubjectCard from "./_components/SubjectCard";
 
-export async function generateStaticParams() {
-  const universities = await fetchUniversities();
-
-  return universities.map((university) => ({
-    id: String(university.id),
-  }));
-}
+export const dynamic = "force-dynamic";
 
 const UniversityPage = async ({
   params,

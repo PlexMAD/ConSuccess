@@ -7,7 +7,12 @@ export class UsersService {
   constructor(private readonly prisma: PrismaService) { }
 
   createUser(data: Prisma.UserCreateInput) {
-    return this.prisma.user.create({ data });
+    return this.prisma.user.create({
+      data: {
+        ...data,
+        username: this.normalizeUsername(data.username),
+      },
+    });
   }
 
   getAllUsers() {
@@ -22,7 +27,12 @@ export class UsersService {
   }
 
   updateUser(id: number, data: Prisma.UserUpdateInput) {
-    return this.prisma.user.update({ where: { id }, data });
+    const normalizedData =
+      typeof data.username === 'string'
+        ? { ...data, username: this.normalizeUsername(data.username) }
+        : data;
+
+    return this.prisma.user.update({ where: { id }, data: normalizedData });
   }
 
   removeUser(id: number) {
@@ -30,6 +40,12 @@ export class UsersService {
   }
 
   getUserByName(username: string) {
-    return this.prisma.user.findUnique({ where: { username } });
+    return this.prisma.user.findUnique({
+      where: { username: this.normalizeUsername(username) },
+    });
+  }
+
+  private normalizeUsername(username: string) {
+    return username.trim().toLowerCase();
   }
 }
