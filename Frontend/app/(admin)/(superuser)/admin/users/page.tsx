@@ -2,6 +2,7 @@ import { Heading } from "@/app/_components/typography/Heading";
 import { axiosApi } from "@/shared/api/config";
 import { User } from "@/shared/types/users";
 import { cookies } from "next/headers";
+import Link from "next/link";
 import { UsersTable } from "./_components/UsersTable";
 
 const AdminUsersPage = async () => {
@@ -14,6 +15,12 @@ const AdminUsersPage = async () => {
 
   return (
     <div className="flex flex-col gap-1 max-w-3xl">
+      <Link
+        href="/admin"
+        className="self-start text-sm text-neutral-500 hover:text-neutral-800 transition"
+      >
+        ← Назад
+      </Link>
       <Heading title="Пользователи" />
       <p className="text-sm text-slate-500 -mt-3 mb-6">
         Зарегистрировано: {users.length}

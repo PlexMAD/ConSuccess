@@ -26,6 +26,7 @@ const EditPostForm = ({
   initialBody,
   initialIsPrivate,
   attachments,
+  onSaved,
   onCancel,
 }: {
   postId: number;
@@ -34,6 +35,7 @@ const EditPostForm = ({
   initialBody: string;
   initialIsPrivate: boolean;
   attachments: Attachment[];
+  onSaved?: (isPrivate: boolean) => void;
   onCancel: () => void;
 }) => {
   const router = useRouter();
@@ -90,6 +92,7 @@ const EditPostForm = ({
       );
 
       toast.success("Изменения сохранены");
+      onSaved?.(values.isPrivate);
       onCancel();
       router.refresh();
     } catch (err) {

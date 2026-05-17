@@ -11,10 +11,12 @@ import FavoriteButton from "@/app/_components/shared/FavoriteButton";
 import ImageGallery from "@/app/_components/shared/ImageGallery";
 import LikeButton from "@/app/_components/shared/LikeButton";
 import LikeCount from "@/app/_components/shared/LikeCount";
+import PostPrivacyToggleButton from "@/app/_components/shared/PostPrivacyToggleButton";
 
 const PostDetail = ({
   post,
   isOwner,
+  canTogglePrivacy,
   isFavorited,
   isLiked,
   isLoggedIn,
@@ -23,6 +25,7 @@ const PostDetail = ({
 }: {
   post: Post;
   isOwner: boolean;
+  canTogglePrivacy: boolean;
   isFavorited: boolean;
   isLiked: boolean;
   isLoggedIn: boolean;
@@ -30,6 +33,7 @@ const PostDetail = ({
   subjectId: string;
 }) => {
   const [editMode, setEditMode] = useState(false);
+  const [isPrivate, setIsPrivate] = useState(post.isPrivate);
   const backHref = `/universities/${universityId}/subjects/${subjectId}`;
   const likesCount = post._count?.likes ?? 0;
 
@@ -41,8 +45,9 @@ const PostDetail = ({
           subjectId={subjectId}
           initialTitle={post.title}
           initialBody={post.body}
-          initialIsPrivate={post.isPrivate}
+          initialIsPrivate={isPrivate}
           attachments={post.attachments}
+          onSaved={setIsPrivate}
           onCancel={() => setEditMode(false)}
         />
       </div>
@@ -62,11 +67,19 @@ const PostDetail = ({
         <div className="flex flex-col gap-1">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
             <h1 className="text-2xl font-bold wrap-break-word min-w-0 break-all">{post.title}</h1>
-            <div className="flex items-center gap-3 shrink-0 sm:pt-1">
-              {post.isPrivate && (
+            <div className="flex flex-wrap items-center gap-2 shrink-0 sm:justify-end sm:gap-3 sm:pt-1">
+              {isPrivate && (
                 <span className="rounded-md bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700">
                   Личный
                 </span>
+              )}
+              {canTogglePrivacy && (
+                <PostPrivacyToggleButton
+                  postId={post.id}
+                  subjectId={subjectId}
+                  isPrivate={isPrivate}
+                  onChange={setIsPrivate}
+                />
               )}
               {isLoggedIn ? (
                 <LikeButton

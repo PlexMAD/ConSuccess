@@ -107,6 +107,22 @@ export class PostsController {
     );
   }
 
+  @Patch(':id/privacy')
+  @UseGuards(AuthGuard)
+  setPrivacy(
+    @Param('subjectId', ParseIntPipe) subjectId: number,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: { isPrivate: boolean },
+    @Req() req: { user: { id: number } },
+  ) {
+    return this.postsService.setPostPrivacy(
+      subjectId,
+      id,
+      req.user.id,
+      body.isPrivate === true,
+    );
+  }
+
   @Delete(':id')
   @UseGuards(AuthGuard)
   deletePost(

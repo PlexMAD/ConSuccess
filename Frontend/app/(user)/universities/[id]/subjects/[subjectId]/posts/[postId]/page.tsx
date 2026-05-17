@@ -56,6 +56,7 @@ const PostPage = async ({
     <PostDetail
       post={post}
       isOwner={canModify}
+      canTogglePrivacy={isOwner}
       isFavorited={isFavorited}
       isLiked={isLiked}
       isLoggedIn={accessToken !== null}
