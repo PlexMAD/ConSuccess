@@ -2,6 +2,7 @@ DO $$
 DECLARE
   admin_id INT;
   demo_id INT;
+  teacher_id INT;
   moscow_id INT;
   spb_id INT;
   mospoly_id INT;
@@ -25,6 +26,13 @@ BEGIN
   ON CONFLICT (username) DO UPDATE
   SET password_hash = EXCLUDED.password_hash
   RETURNING id INTO demo_id;
+
+  INSERT INTO users (username, password_hash, role)
+  VALUES ('teacher', '$2b$10$OA47QBwM4I8cnCItVVGWdufk95lRUX9l0QfCpJMg2dA8S6ID.rV/O', 'TEACHER')
+  ON CONFLICT (username) DO UPDATE
+  SET password_hash = EXCLUDED.password_hash,
+      role = 'TEACHER'
+  RETURNING id INTO teacher_id;
 
   INSERT INTO "City" (name)
   VALUES ('Москва'), ('Санкт-Петербург')
@@ -110,6 +118,12 @@ BEGIN
     'Начните с интерфейсов для DTO, не используйте any без необходимости, выносите повторяющиеся типы в shared/types и проверяйте nullable-поля перед рендером. Это экономит много времени при работе с формами и API.',
     true, false, NOW()
   WHERE NOT EXISTS (SELECT 1 FROM posts WHERE title = 'Шпаргалка по TypeScript для проекта');
+
+  INSERT INTO posts (user_id, subject_id, title, body, visible, is_private, updated_at)
+  SELECT teacher_id, programming_id, 'Материал преподавателя: как оформлять лабораторные',
+    'В отчете важно фиксировать цель работы, кратко описывать алгоритм, прикладывать ключевые фрагменты кода и отдельно показывать результаты тестирования. Чем прозрачнее ход решения, тем проще защита.',
+    true, false, NOW()
+  WHERE NOT EXISTS (SELECT 1 FROM posts WHERE title = 'Материал преподавателя: как оформлять лабораторные');
 
   INSERT INTO posts (user_id, subject_id, title, body, visible, is_private, updated_at)
   SELECT admin_id, databases_id, 'Нормализация базы данных простыми словами',

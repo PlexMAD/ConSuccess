@@ -13,6 +13,12 @@ type Viewer = {
 const PRIVILEGED_ROLES = ['ADMIN', 'MODERATOR'];
 const DAILY_POST_LIMIT = 10;
 const TOTAL_POST_LIMIT = 50;
+const POST_AUTHOR_SELECT = {
+  id: true,
+  username: true,
+  avatar: true,
+  role: true,
+} as const;
 
 @Injectable()
 export class PostsService {
@@ -24,7 +30,7 @@ export class PostsService {
       include: {
         attachments: true,
         _count: { select: { likes: true } },
-        user: { select: { id: true, username: true, avatar: true } },
+        user: { select: POST_AUTHOR_SELECT },
         subject: {
           select: {
             id: true,
@@ -46,7 +52,11 @@ export class PostsService {
         visible: true,
         isPrivate: false,
       },
-      include: { attachments: true, _count: { select: { likes: true } } },
+      include: {
+        attachments: true,
+        _count: { select: { likes: true } },
+        user: { select: POST_AUTHOR_SELECT },
+      },
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -59,7 +69,11 @@ export class PostsService {
         visible: true,
         isPrivate: true,
       },
-      include: { attachments: true, _count: { select: { likes: true } } },
+      include: {
+        attachments: true,
+        _count: { select: { likes: true } },
+        user: { select: POST_AUTHOR_SELECT },
+      },
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -70,7 +84,7 @@ export class PostsService {
       include: {
         attachments: true,
         _count: { select: { likes: true } },
-        user: { select: { id: true, username: true, avatar: true } },
+        user: { select: POST_AUTHOR_SELECT },
       },
     });
     if (!post) throw new NotFoundException('Post not found');
@@ -89,7 +103,7 @@ export class PostsService {
       include: {
         attachments: true,
         _count: { select: { likes: true } },
-        user: { select: { id: true, username: true, avatar: true } },
+        user: { select: POST_AUTHOR_SELECT },
         subject: {
           select: {
             id: true,
@@ -109,7 +123,7 @@ export class PostsService {
       include: {
         attachments: true,
         _count: { select: { likes: true } },
-        user: { select: { id: true, username: true, avatar: true } },
+        user: { select: POST_AUTHOR_SELECT },
       },
       orderBy: { createdAt: 'desc' },
       take: limit,
@@ -137,7 +151,11 @@ export class PostsService {
           create: attachmentUrls.map((url) => ({ url })),
         },
       },
-      include: { attachments: true, _count: { select: { likes: true } } },
+      include: {
+        attachments: true,
+        _count: { select: { likes: true } },
+        user: { select: POST_AUTHOR_SELECT },
+      },
     });
   }
 
@@ -160,7 +178,11 @@ export class PostsService {
           create: attachmentUrls.map((url) => ({ url })),
         },
       },
-      include: { attachments: true, _count: { select: { likes: true } } },
+      include: {
+        attachments: true,
+        _count: { select: { likes: true } },
+        user: { select: POST_AUTHOR_SELECT },
+      },
     });
   }
 
@@ -192,7 +214,11 @@ export class PostsService {
           create: newAttachmentUrls.map((url) => ({ url })),
         },
       },
-      include: { attachments: true, _count: { select: { likes: true } } },
+      include: {
+        attachments: true,
+        _count: { select: { likes: true } },
+        user: { select: POST_AUTHOR_SELECT },
+      },
     });
   }
 
@@ -223,7 +249,7 @@ export class PostsService {
       include: {
         attachments: true,
         _count: { select: { likes: true } },
-        user: { select: { id: true, username: true, avatar: true } },
+        user: { select: POST_AUTHOR_SELECT },
       },
     });
   }
@@ -238,7 +264,7 @@ export class PostsService {
       include: {
         attachments: true,
         _count: { select: { likes: true } },
-        user: { select: { id: true, username: true, avatar: true } },
+        user: { select: POST_AUTHOR_SELECT },
         subject: {
           select: {
             id: true,

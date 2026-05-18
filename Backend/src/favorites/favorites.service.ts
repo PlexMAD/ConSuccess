@@ -11,7 +11,7 @@ export class FavoritesService {
         userId,
         post: {
           visible: true,
-          OR: [{ isPrivate: false }, { userId }],
+          OR: [{ isPrivate: false }, { userId: userId }],
         },
       },
       include: {
@@ -20,6 +20,8 @@ export class FavoritesService {
             id: true,
             title: true,
             subjectId: true,
+            isPrivate: true,
+            user: { select: { role: true } },
             subject: { select: { id: true, universityId: true } },
           },
         },
@@ -33,7 +35,7 @@ export class FavoritesService {
       where: {
         id: postId,
         visible: true,
-        OR: [{ isPrivate: false }, { userId }],
+        OR: [{ isPrivate: false }, { userId: userId }],
       },
       select: { id: true },
     });

@@ -6,16 +6,18 @@ import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const ROLES: Role[] = ["USER", "MODERATOR", "ADMIN"];
+const ROLES: Role[] = ["USER", "TEACHER", "MODERATOR", "ADMIN"];
 
 const ROLE_LABELS: Record<Role, string> = {
   USER: "Пользователь",
+  TEACHER: "Преподаватель",
   MODERATOR: "Модератор",
   ADMIN: "Администратор",
 };
 
 const ROLE_COLORS: Record<Role, string> = {
   USER: "bg-slate-100 text-slate-600",
+  TEACHER: "bg-emerald-50 text-emerald-700",
   MODERATOR: "bg-blue-50 text-primary",
   ADMIN: "bg-primary text-white",
 };

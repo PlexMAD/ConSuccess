@@ -4,6 +4,7 @@ import { getPreviewAttachment } from "@/shared/lib/attachments";
 import Link from "next/link";
 import AttachmentTile from "./AttachmentTile";
 import LikeCount from "./LikeCount";
+import TeacherMaterialBadge from "./TeacherMaterialBadge";
 
 const KnowledgePostCard = ({ post }: { post: Post }) => {
   const previewAttachment = getPreviewAttachment(post.attachments);
@@ -31,6 +32,7 @@ const KnowledgePostCard = ({ post }: { post: Post }) => {
           <h3 className="line-clamp-2 text-base font-semibold leading-5 text-slate-900">
             {post.title}
           </h3>
+          {post.user?.role === "TEACHER" && <TeacherMaterialBadge />}
           <p className="line-clamp-2 text-sm text-neutral-500">{post.body}</p>
           <div className="flex items-center justify-between gap-2">
             <p className="text-xs text-neutral-400">

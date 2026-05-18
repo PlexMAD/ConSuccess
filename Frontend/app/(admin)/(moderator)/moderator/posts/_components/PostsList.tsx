@@ -1,6 +1,7 @@
 "use client";
 
 import { apiURL } from "@/shared/api/config";
+import TeacherMaterialBadge from "@/app/_components/shared/TeacherMaterialBadge";
 import { RecentPost } from "@/shared/types/posts";
 import Image from "next/image";
 import Link from "next/link";
@@ -92,6 +93,7 @@ export function PostsList({ initialPosts }: { initialPosts: RecentPost[] }) {
                 >
                   {post.subject ? post.subject.name : "Знания"}
                 </span>
+                {post.user.role === "TEACHER" && <TeacherMaterialBadge />}
                 <span
                   className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${
                     post.visible

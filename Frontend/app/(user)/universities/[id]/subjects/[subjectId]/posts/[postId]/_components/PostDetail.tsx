@@ -12,6 +12,7 @@ import ImageGallery from "@/app/_components/shared/ImageGallery";
 import LikeButton from "@/app/_components/shared/LikeButton";
 import LikeCount from "@/app/_components/shared/LikeCount";
 import PostPrivacyToggleButton from "@/app/_components/shared/PostPrivacyToggleButton";
+import TeacherMaterialBadge from "@/app/_components/shared/TeacherMaterialBadge";
 
 const PostDetail = ({
   post,
@@ -111,7 +112,7 @@ const PostDetail = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {post.user && (
               <>
                 {post.user.avatar ? (
@@ -131,6 +132,7 @@ const PostDetail = ({
                 <span className="text-xs text-neutral-500">
                   {post.user.username}
                 </span>
+                {post.user.role === "TEACHER" && <TeacherMaterialBadge />}
                 <span className="text-xs text-neutral-300">·</span>
               </>
             )}

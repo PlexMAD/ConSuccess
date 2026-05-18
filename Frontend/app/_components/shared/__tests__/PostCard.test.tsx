@@ -62,6 +62,26 @@ describe("PostCard", () => {
     expect(link).toHaveAttribute("href", "/universities/1/subjects/2/posts/1");
   });
 
+  it("marks teacher posts", () => {
+    render(
+      <PostCard
+        post={{
+          ...mockPost,
+          user: {
+            id: 3,
+            username: "teacher",
+            avatar: null,
+            role: "TEACHER",
+          },
+        }}
+        universityId={1}
+        subjectId={2}
+      />,
+    );
+
+    expect(screen.getByText("Материал от преподавателя")).toBeInTheDocument();
+  });
+
   it("shows attachment count badge when multiple attachments", () => {
     render(<PostCard post={mockPost} universityId={1} subjectId={2} />);
     expect(screen.getByText("+1 файлов")).toBeInTheDocument();

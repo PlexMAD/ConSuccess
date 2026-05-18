@@ -1,6 +1,7 @@
 "use client";
 
 import { ConSuccessLogo } from "@/app/_icons";
+import TeacherMaterialBadge from "@/app/_components/shared/TeacherMaterialBadge";
 import { FavoritePost } from "@/shared/types/favorites";
 import axios from "axios";
 import { Menu, Star, X } from "lucide-react";
@@ -57,6 +58,13 @@ const MobileMenu = () => {
       loadFavorites();
     }
   }, [open, loadFavorites]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    window.addEventListener("favorites:changed", loadFavorites);
+    return () => window.removeEventListener("favorites:changed", loadFavorites);
+  }, [loadFavorites, open]);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -180,6 +188,14 @@ const MobileMenu = () => {
                       <p className="text-xs font-semibold text-slate-900 line-clamp-2 leading-snug pr-3">
                         {fav.post.title}
                       </p>
+                      {fav.post.isPrivate && (
+                        <span className="w-fit rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">
+                          Личный
+                        </span>
+                      )}
+                      {fav.post.user?.role === "TEACHER" && (
+                        <TeacherMaterialBadge className="max-w-full" />
+                      )}
                       <Link href={href} className="text-xs font-medium text-primary mt-auto">
                         Открыть →
                       </Link>

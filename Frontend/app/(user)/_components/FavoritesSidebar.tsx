@@ -1,11 +1,12 @@
 "use client";
 
 import { FavoritePost } from "@/shared/types/favorites";
+import TeacherMaterialBadge from "@/app/_components/shared/TeacherMaterialBadge";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Star } from "../../_icons";
 
@@ -18,17 +19,25 @@ const FavoritesSidebar = ({
 }) => {
   const router = useRouter();
   const [favorites, setFavorites] = useState(initialFavorites);
+  const loadFavorites = useCallback(() => {
+    axios
+      .get<FavoritePost[]>("/api/favorites")
+      .then(({ data }) => setFavorites(data))
+      .catch(() => setFavorites([]));
+  }, []);
 
   useEffect(() => {
     setFavorites(initialFavorites);
   }, [initialFavorites]);
 
   useEffect(() => {
-    axios
-      .get<FavoritePost[]>("/api/favorites")
-      .then(({ data }) => setFavorites(data))
-      .catch(() => setFavorites([]));
-  }, []);
+    loadFavorites();
+  }, [loadFavorites]);
+
+  useEffect(() => {
+    window.addEventListener("favorites:changed", loadFavorites);
+    return () => window.removeEventListener("favorites:changed", loadFavorites);
+  }, [loadFavorites]);
 
   const remove = async (postId: number) => {
     setFavorites((prev) => prev.filter((f) => f.postId !== postId));
@@ -74,6 +83,14 @@ const FavoritesSidebar = ({
                 <p className="text-xs font-semibold text-slate-900 line-clamp-2 leading-snug pr-3">
                   {fav.post.title}
                 </p>
+                {fav.post.isPrivate && (
+                  <span className="w-fit rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">
+                    Личный
+                  </span>
+                )}
+                {fav.post.user?.role === "TEACHER" && (
+                  <TeacherMaterialBadge className="max-w-full" />
+                )}
                 <Link href={href} className="text-xs font-medium text-primary mt-auto">
                   Открыть →
                 </Link>

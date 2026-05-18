@@ -1,6 +1,10 @@
-import { fetchPostsBySubject } from "@/shared/api/posts";
+import {
+  fetchPostsBySubject,
+  fetchPrivatePostsBySubject,
+} from "@/shared/api/posts";
 import { fetchSubject } from "@/shared/api/subjects";
 import { fetchUniversity } from "@/shared/api/universities";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import AddPostButton from "./_components/AddPostButton";
 import PrivatePostsButton from "./_components/PrivatePostsButton";
@@ -14,13 +18,22 @@ const SubjectPage = async ({
   params: Promise<{ id: string; subjectId: string }>;
 }) => {
   const { id, subjectId } = await params;
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("access_token")?.value;
   const universityId = Number(id);
   const subjectIdNum = Number(subjectId);
 
-  const [university, subject, posts] = await Promise.all([
+  const privatePostsCountPromise = accessToken
+    ? fetchPrivatePostsBySubject(subjectIdNum, accessToken)
+        .then((privatePosts) => privatePosts.length)
+        .catch(() => 0)
+    : Promise.resolve(0);
+
+  const [university, subject, posts, privatePostsCount] = await Promise.all([
     fetchUniversity(universityId),
     fetchSubject(universityId, subjectIdNum),
     fetchPostsBySubject(subjectIdNum),
+    privatePostsCountPromise,
   ]);
 
   return (
@@ -38,7 +51,11 @@ const SubjectPage = async ({
         <p className="text-sm text-neutral-500"></p>
         <div className="flex flex-wrap gap-2">
           <AddPostButton universityId={id} subjectId={subjectId} />
-          <PrivatePostsButton universityId={id} subjectId={subjectId} />
+          <PrivatePostsButton
+            universityId={id}
+            subjectId={subjectId}
+            count={privatePostsCount}
+          />
         </div>
       </div>
 

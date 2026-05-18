@@ -9,6 +9,7 @@ import FavoriteButton from "@/app/_components/shared/FavoriteButton";
 import ImageGallery from "@/app/_components/shared/ImageGallery";
 import LikeButton from "@/app/_components/shared/LikeButton";
 import LikeCount from "@/app/_components/shared/LikeCount";
+import TeacherMaterialBadge from "@/app/_components/shared/TeacherMaterialBadge";
 import KnowledgeDeletePostButton from "./KnowledgeDeletePostButton";
 import KnowledgeEditPostForm from "./KnowledgeEditPostForm";
 
@@ -57,7 +58,7 @@ const KnowledgePostDetail = ({
             <h1 className="text-2xl font-bold wrap-break-word min-w-0 break-all">
               {post.title}
             </h1>
-            <div className="flex items-center gap-3 shrink-0 sm:pt-1">
+            <div className="flex flex-wrap items-center gap-3 shrink-0 sm:justify-end sm:pt-1">
               {isLoggedIn ? (
                 <LikeButton
                   postId={post.id}
@@ -84,7 +85,7 @@ const KnowledgePostDetail = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {post.user && (
               <>
                 {post.user.avatar ? (
@@ -104,6 +105,7 @@ const KnowledgePostDetail = ({
                 <span className="text-xs text-neutral-500">
                   {post.user.username}
                 </span>
+                {post.user.role === "TEACHER" && <TeacherMaterialBadge />}
                 <span className="text-xs text-neutral-300">·</span>
               </>
             )}

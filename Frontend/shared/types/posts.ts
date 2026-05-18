@@ -1,3 +1,5 @@
+import type { Role } from "./users";
+
 export type Attachment = {
     id: number;
     url: string;
@@ -8,6 +10,7 @@ export type PostAuthor = {
     id: number;
     username: string;
     avatar: string | null;
+    role: Role;
 }
 
 export type PostCounts = {
@@ -23,7 +26,7 @@ export type Post = {
     id: number;
     title: string;
     body: string;
-    subjectId: number;
+    subjectId: number | null;
     userId: number;
     visible: boolean;
     isPrivate: boolean;

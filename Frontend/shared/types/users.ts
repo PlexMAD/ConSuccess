@@ -3,7 +3,7 @@ export type UserCreds = {
   password: string;
 };
 
-export type Role = "USER" | "MODERATOR" | "ADMIN";
+export type Role = "USER" | "TEACHER" | "MODERATOR" | "ADMIN";
 
 export type User = {
   id: number;

@@ -7,9 +7,11 @@ import { useEffect, useState } from "react";
 const PrivatePostsButton = ({
   universityId,
   subjectId,
+  count,
 }: {
   universityId: string;
   subjectId: string;
+  count: number;
 }) => {
   const [isAuthorized, setIsAuthorized] = useState(false);
 
@@ -23,10 +25,13 @@ const PrivatePostsButton = ({
 
   return (
     <Link
-      className="self-start rounded-lg border border-neutral-200 bg-white px-4 py-2 font-medium text-neutral-600 transition hover:border-primary hover:text-primary"
+      className="inline-flex min-w-44 items-center justify-between gap-4 self-start rounded-lg border border-neutral-200 bg-white px-4 py-2 font-medium text-neutral-600 transition hover:border-primary hover:text-primary"
       href={`/universities/${universityId}/subjects/${subjectId}/private`}
     >
-      Мои личные
+      <span>Мои личные</span>
+      <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-semibold leading-none text-neutral-500">
+        {count}
+      </span>
     </Link>
   );
 };

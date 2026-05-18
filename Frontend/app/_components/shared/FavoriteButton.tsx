@@ -32,6 +32,7 @@ const FavoriteButton = ({
         toast.success("Добавлено в избранное");
       }
       setIsFavorited((prev) => !prev);
+      window.dispatchEvent(new Event("favorites:changed"));
       router.refresh();
     } finally {
       setLoading(false);
