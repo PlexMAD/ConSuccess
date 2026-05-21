@@ -8,15 +8,17 @@ datasource db {
 }
 
 model User {
-  id           Int        @id @default(autoincrement())
-  username     String     @unique
-  passwordHash String     @map("password_hash")
-  avatar       String?
-  createdAt    DateTime   @default(now()) @map("created_at")
-  favorites    Favorite[]
-  likes        Like[]
-  posts        Post[]
-  role         Role       @default(USER)
+  id                          Int                  @id @default(autoincrement())
+  username                    String               @unique
+  passwordHash                String               @map("password_hash")
+  avatar                      String?
+  createdAt                   DateTime             @default(now()) @map("created_at")
+  favorites                   Favorite[]
+  likes                       Like[]
+  posts                       Post[]
+  role                        Role                 @default(USER)
+  teacherApplications         TeacherApplication[] @relation("TeacherApplicationUser")
+  reviewedTeacherApplications TeacherApplication[] @relation("TeacherApplicationReviewer")
 
   @@map("users")
 }
@@ -26,6 +28,11 @@ enum Role {
   TEACHER
   MODERATOR
   ADMIN
+}
+
+enum TeacherApplicationStatus {
+  PENDING
+  APPROVED
 }
 
 model University {
@@ -102,4 +109,19 @@ model Like {
 
   @@id([userId, postId])
   @@map("likes")
+}
+
+model TeacherApplication {
+  id           Int                      @id @default(autoincrement())
+  userId       Int                      @unique @map("user_id")
+  fullName     String                   @map("full_name")
+  documentUrl  String                   @map("document_url")
+  status       TeacherApplicationStatus @default(PENDING)
+  createdAt    DateTime                 @default(now()) @map("created_at")
+  reviewedAt   DateTime?                @map("reviewed_at")
+  reviewedById Int?                     @map("reviewed_by_id")
+  reviewer     User?                    @relation("TeacherApplicationReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  user         User                     @relation("TeacherApplicationUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("teacher_applications")
 }

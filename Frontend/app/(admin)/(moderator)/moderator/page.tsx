@@ -1,12 +1,7 @@
 import { Heading } from "@/app/_components/typography/Heading";
 import Link from "next/link";
 
-const adminSections = [
-  {
-    title: "Управление пользователями",
-    href: "/admin/users",
-    description: "Просмотр и изменение ролей всех зарегистрированных пользователей",
-  },
+const moderatorSections = [
   {
     title: "Все посты",
     href: "/moderator/posts",
@@ -19,14 +14,20 @@ const adminSections = [
   },
 ];
 
-const AdminGatewayPage = () => {
+const ModeratorGatewayPage = () => {
   return (
     <div className="flex flex-col gap-1 max-w-2xl">
-      <Heading title="Панель администратора" />
-      <p className="text-sm text-slate-500 -mt-3 mb-6">Выберите раздел для управления</p>
+      <Link
+        href="/"
+        className="self-start text-sm text-neutral-500 hover:text-neutral-800 transition"
+      >
+        ← Назад
+      </Link>
+      <Heading title="Панель модератора" />
+      <p className="text-sm text-slate-500 -mt-3 mb-6">Выберите раздел для проверки</p>
 
       <div className="grid gap-4">
-        {adminSections.map((section) => (
+        {moderatorSections.map((section) => (
           <Link
             key={section.href}
             href={section.href}
@@ -43,4 +44,4 @@ const AdminGatewayPage = () => {
   );
 };
 
-export default AdminGatewayPage;
+export default ModeratorGatewayPage;

@@ -22,6 +22,12 @@ const features = [
     desc: "Университеты из разных городов в одном каталоге",
     href: "/universities",
   },
+  {
+    title: "Стать преподавателем",
+    desc: "Отправьте заявку с подтверждающим документом, чтобы публиковать материалы от преподавателя",
+    href: "/teacher-application",
+    wide: true,
+  },
 ];
 
 const AboutPage = () => {
@@ -41,41 +47,22 @@ const AboutPage = () => {
         </div>
 
         <div className="flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-slate-900">
-            Как это работает?
-          </h2>
-          <ul className="flex flex-col gap-2">
-            {[
-              "Выберите университет из списка",
-              "Откройте нужный предмет",
-              "Просматривайте материалы, оставленные другими студентами",
-              "Делитесь своими конспектами и заметками",
-            ].map((step, i) => (
-              <li
-                key={i}
-                className="flex items-start gap-3 text-sm text-slate-600"
-              >
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-white text-xs font-semibold">
-                  {i + 1}
-                </span>
-                {step}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="flex flex-col gap-3">
           <h2 className="text-lg font-semibold text-slate-900">Возможности</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {features.map((item) => {
+              const cardClassName = item.wide
+                ? "rounded-xl border border-emerald-200 bg-emerald-50 p-4 sm:col-span-2"
+                : "rounded-xl border border-neutral-200 bg-white p-4";
               const card = (
                 <div className="flex flex-col gap-1">
-                  <p className="text-sm font-semibold text-slate-800">
+                  <p className={`text-sm font-semibold ${item.wide ? "text-emerald-900" : "text-slate-800"}`}>
                     {item.title}
                   </p>
-                  <p className="text-xs text-slate-500">{item.desc}</p>
+                  <p className={`text-xs ${item.wide ? "text-emerald-800/80" : "text-slate-500"}`}>
+                    {item.desc}
+                  </p>
                   {item.href && (
-                    <span className="mt-1 text-xs font-medium text-primary">
+                    <span className={`mt-1 text-xs font-medium ${item.wide ? "text-emerald-700" : "text-primary"}`}>
                       Перейти →
                     </span>
                   )}
@@ -86,14 +73,14 @@ const AboutPage = () => {
                 <Link
                   key={item.title}
                   href={item.href}
-                  className="rounded-xl border border-neutral-200 bg-white p-4 hover:border-primary hover:shadow-sm transition"
+                  className={`${cardClassName} transition hover:border-primary hover:shadow-sm`}
                 >
                   {card}
                 </Link>
               ) : (
                 <div
                   key={item.title}
-                  className="rounded-xl border border-neutral-200 bg-white p-4"
+                  className={cardClassName}
                 >
                   {card}
                 </div>

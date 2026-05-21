@@ -15,6 +15,8 @@ import { RecentPostsController } from './posts/recent-posts.controller';
 import { PostsService } from './posts/posts.service';
 import { SubjectsController } from './subjects/subjects.controller';
 import { SubjectsService } from './subjects/subjects.service';
+import { TeacherApplicationsController } from './teacher-applications/teacher-applications.controller';
+import { TeacherApplicationsService } from './teacher-applications/teacher-applications.service';
 import { UniversitiesController } from './universities/universities.controller';
 import { UniversitiesService } from './universities/universities.service';
 import { UsersController } from './users/users.controller';
@@ -28,7 +30,28 @@ import { UsersService } from './users/users.service';
       isGlobal: true,
     }),
   ],
-  controllers: [AdminController, UsersController, UniversitiesController, CitiesController, SubjectsController, PostsController, RecentPostsController, KnowledgePostsController, FavoritesController, LikesController],
-  providers: [UsersService, UniversitiesService, CitiesService, SubjectsService, PostsService, FavoritesService, LikesService],
+  controllers: [
+    AdminController,
+    UsersController,
+    UniversitiesController,
+    CitiesController,
+    SubjectsController,
+    PostsController,
+    RecentPostsController,
+    KnowledgePostsController,
+    FavoritesController,
+    LikesController,
+    TeacherApplicationsController,
+  ],
+  providers: [
+    UsersService,
+    UniversitiesService,
+    CitiesService,
+    SubjectsService,
+    PostsService,
+    FavoritesService,
+    LikesService,
+    TeacherApplicationsService,
+  ],
 })
 export class AppModule {}

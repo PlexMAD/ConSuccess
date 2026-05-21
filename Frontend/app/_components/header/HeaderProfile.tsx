@@ -40,7 +40,7 @@ const HeaderProfile = async () => {
         )}
         {user.role === "MODERATOR" && (
           <Link
-            href="/moderator/posts"
+            href="/moderator"
             className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-xl bg-amber-500 px-3.5 py-2 text-xs font-semibold text-white shadow-lg transition hover:brightness-110"
           >
             <Image src={AdminIcon} alt="Moderator" width={16} height={16} className="invert" />

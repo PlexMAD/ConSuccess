@@ -7,4 +7,5 @@ export const endpoints = {
     likes: "/likes",
     posts: "/posts",
     knowledgePosts: "/knowledge-posts",
+    teacherApplications: "/teacher-applications",
 }
