@@ -4,7 +4,7 @@ ConSuccess — full-stack платформа для отзывов, обсужд
 
 ## Стек
 
-- **Frontend:** Next.js 16, React 19, TypeScript, Tailwind CSS v4, TanStack Query, React Hook Form, Sonner
+- **Frontend:** Next.js 16, React 19, TypeScript, Tailwind CSS v4, React Hook Form, Sonner
 - **Backend:** NestJS 11, TypeScript, Prisma 7, PostgreSQL, JWT, Multer
 - **Инфраструктура:** Docker Compose, PostgreSQL 17, Node.js 22
 
